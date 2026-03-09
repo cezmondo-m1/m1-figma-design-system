@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Banner, Button, FloatingActionButton, HotButton, IconButton, Card } from '../components'
+import { Banner, Button, FloatingActionButton, HotButton, IconButton, Card, Radio, Checkbox, CheckboxSingle, FormSelect, Switch } from '../components'
 import { faPlus, faMinus, faArrowsRotate, faPen, faShareNodes } from '@fortawesome/free-solid-svg-icons'
 
 // ---------------------------------------------------------------------------
@@ -754,10 +754,229 @@ function CardSection({ darkMode }) {
 }
 
 // ---------------------------------------------------------------------------
+// Checkboxes & Radios section
+// ---------------------------------------------------------------------------
+const SWITCH_CLIENTS = ['Web', 'iOS26', 'iOS18', 'Android']
+
+function CheckboxRadioSection({ darkMode }) {
+  const [radioValue, setRadioValue] = useState('a')
+  const [checks, setChecks] = useState({ a: true, b: false, c: false })
+  const [switchStates, setSwitchStates] = useState({ Web: true, iOS26: false, iOS18: true, Android: false })
+
+  const toggleCheck = (key) => setChecks((p) => ({ ...p, [key]: !p[key] }))
+
+  return (
+    <div className="space-y-10">
+      {/* Atomic Radio */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Radio (.radios)</h2>
+        <p className="text-sm text-neutral-500 mb-4">Atomic radio indicator — On / Off states, 24×24</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Radio checked={false} darkMode={darkMode} />
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: darkMode ? '#8F9BAE' : '#546073' }}>Off</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Radio checked={true} darkMode={darkMode} />
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: darkMode ? '#8F9BAE' : '#546073' }}>On</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Radio checked={false} darkMode={darkMode} disabled />
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>Disabled</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Atomic Checkbox */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Checkbox (.checkboxes)</h2>
+        <p className="text-sm text-neutral-500 mb-4">Atomic checkbox indicator — On / Off states, 24×24 (icon 18×18)</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Checkbox checked={false} darkMode={darkMode} />
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: darkMode ? '#8F9BAE' : '#546073' }}>Off</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Checkbox checked={true} darkMode={darkMode} />
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: darkMode ? '#8F9BAE' : '#546073' }}>On</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <Checkbox checked={true} darkMode={darkMode} disabled />
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>Disabled</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CheckboxSingle */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Checkbox Single (.Checkbox single)</h2>
+        <p className="text-sm text-neutral-500 mb-4">Inline indicator + text label — Checkbox and Radio kinds, interactive</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <CheckboxSingle
+              kind="Checkbox"
+              label="Accept terms and conditions"
+              checked={checks.a}
+              darkMode={darkMode}
+              onChange={() => toggleCheck('a')}
+            />
+            <CheckboxSingle
+              kind="Checkbox"
+              label="Subscribe to newsletter"
+              checked={checks.b}
+              darkMode={darkMode}
+              onChange={() => toggleCheck('b')}
+            />
+            <div style={{ borderTop: `1px solid ${darkMode ? '#2F3641' : '#D4DBE6'}`, paddingTop: 16 }}>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>Radio kind</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <CheckboxSingle
+                  kind="Radio"
+                  label="Individual account"
+                  checked={radioValue === 'a'}
+                  darkMode={darkMode}
+                  onChange={() => setRadioValue('a')}
+                />
+                <CheckboxSingle
+                  kind="Radio"
+                  label="Joint account"
+                  checked={radioValue === 'b'}
+                  darkMode={darkMode}
+                  onChange={() => setRadioValue('b')}
+                />
+                <CheckboxSingle
+                  kind="Radio"
+                  label="Trust account"
+                  checked={radioValue === 'c'}
+                  darkMode={darkMode}
+                  onChange={() => setRadioValue('c')}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* FormSelect */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Form Select (.formSelect)</h2>
+        <p className="text-sm text-neutral-500 mb-4">Rich selection row — title, description, optional pill/tooltip/list/link</p>
+        <div
+          className="rounded-xl border p-6 space-y-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div>
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 16 }}>Kind = Checkbox (all props visible)</span>
+            <FormSelect
+              kind="Checkbox"
+              checked={checks.c}
+              title="M1 Plus membership"
+              description="Unlock premium features including lower borrowing rates, higher APY, and smart transfers."
+              pill="Popular"
+              tooltip
+              list={['1.5% – 10% Owner\'s Rewards', 'Lower margin rate at 5.90%', 'Smart transfers and insights']}
+              link="View all benefits"
+              darkMode={darkMode}
+              onChange={() => toggleCheck('c')}
+            />
+          </div>
+
+          <div style={{ borderTop: `1px solid ${darkMode ? '#2F3641' : '#D4DBE6'}`, paddingTop: 24 }}>
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 16 }}>Kind = Radio (minimal props)</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              <FormSelect
+                kind="Radio"
+                checked={radioValue === 'a'}
+                title="Individual brokerage"
+                description="A standard investment account for one person."
+                darkMode={darkMode}
+                onChange={() => setRadioValue('a')}
+              />
+              <FormSelect
+                kind="Radio"
+                checked={radioValue === 'b'}
+                title="Joint brokerage"
+                description="A shared investment account for two people."
+                pill="New"
+                darkMode={darkMode}
+                onChange={() => setRadioValue('b')}
+              />
+              <FormSelect
+                kind="Radio"
+                checked={radioValue === 'c'}
+                title="Retirement (IRA)"
+                description="Tax-advantaged account for retirement savings."
+                link="Learn about IRA options"
+                darkMode={darkMode}
+                onChange={() => setRadioValue('c')}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Switch */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Switch (.Switch)</h2>
+        <p className="text-sm text-neutral-500 mb-4">4 clients (Web, iOS26, iOS18, Android) × 4 states (On, Off, On Disabled, Off Disabled)</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div className="space-y-8">
+            {SWITCH_CLIENTS.map((client) => (
+              <div key={client}>
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>
+                  {client}
+                </span>
+                <div style={{ display: 'flex', gap: 32, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                    <Switch
+                      client={client}
+                      on={switchStates[client]}
+                      darkMode={darkMode}
+                      onChange={() => setSwitchStates((p) => ({ ...p, [client]: !p[client] }))}
+                    />
+                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>
+                      {switchStates[client] ? 'On' : 'Off'} (tap)
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                    <Switch client={client} on={true} disabled darkMode={darkMode} />
+                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>On Disabled</span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                    <Switch client={client} on={false} disabled darkMode={darkMode} />
+                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>Off Disabled</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Render active component content
 // ---------------------------------------------------------------------------
 // Pages that have dark mode implemented
-const DARK_MODE_PAGES = new Set(['banners', 'buttons', 'cards'])
+const DARK_MODE_PAGES = new Set(['banners', 'buttons', 'cards', 'checkboxes-radios'])
 
 function ActiveContent({ activeId, darkMode, onToggleDarkMode }) {
   const item = NAV.flatMap((g) => g.items).find((i) => i.id === activeId)
@@ -785,6 +1004,8 @@ function ActiveContent({ activeId, darkMode, onToggleDarkMode }) {
         <ButtonSection darkMode={darkMode} />
       ) : activeId === 'cards' ? (
         <CardSection darkMode={darkMode} />
+      ) : activeId === 'checkboxes-radios' ? (
+        <CheckboxRadioSection darkMode={darkMode} />
       ) : (
         <Placeholder label={item.label} />
       )}
