@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Banner, Button, FloatingActionButton, HotButton, IconButton, Card, Radio, Checkbox, CheckboxSingle, FormSelect, Switch } from '../components'
+import { Banner, Button, FloatingActionButton, HotButton, IconButton, Card, Radio, Checkbox, CheckboxSingle, FormSelect, Switch, ChartTabs, TabularData, DataSet, GaugeChart, MarginHealthGauge, LineChart } from '../components'
 import { faPlus, faMinus, faArrowsRotate, faPen, faShareNodes } from '@fortawesome/free-solid-svg-icons'
 
 // ---------------------------------------------------------------------------
@@ -973,10 +973,241 @@ function CheckboxRadioSection({ darkMode }) {
 }
 
 // ---------------------------------------------------------------------------
+// Charts section
+// ---------------------------------------------------------------------------
+const GAUGE_STATES = ['good', 'warning', 'danger', 'critical', 'empty']
+
+function ChartSection({ darkMode }) {
+  const [activeTab, setActiveTab] = useState('3M')
+
+  return (
+    <div className="space-y-10">
+      {/* ChartTabs */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Chart Tabs (.Tabs)</h2>
+        <p className="text-sm text-neutral-500 mb-4">Time period selector — Active, Default, and Hover states</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <ChartTabs active={activeTab} onChange={setActiveTab} darkMode={darkMode} />
+          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, color: darkMode ? '#5E6D82' : '#8F9BAE', marginTop: 12 }}>
+            Selected: {activeTab}
+          </p>
+        </div>
+      </div>
+
+      {/* TabularData */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Tabular Data (tabularData)</h2>
+        <p className="text-sm text-neutral-500 mb-4">Label + value rows — Default, Link, and Pills types × Default and Large sizes</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>Default size</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <TabularData label="Market value" value="$142,039.42" darkMode={darkMode} />
+                <TabularData label="Allocation" value="22%" darkMode={darkMode} />
+                <TabularData label="View details" value="Holdings →" type="Link" darkMode={darkMode} />
+              </div>
+            </div>
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>Large size</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <TabularData label="Total balance" value="$212,987.44" size="Large" darkMode={darkMode} />
+                <TabularData label="Today's change" value="+$1,736.47" size="Large" darkMode={darkMode} />
+                <TabularData label="Pending trades" value="2 orders" size="Large" type="Link" darkMode={darkMode} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* DataSet */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Data Set (dataSet)</h2>
+        <p className="text-sm text-neutral-500 mb-4">Grouped tabularData rows with accent border — Rows and Columns layouts × Left and Bottom borders</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>Rows / Left border</span>
+              <DataSet
+                layout="Rows"
+                border="Left"
+                darkMode={darkMode}
+                rows={[
+                  { label: 'Market value', value: '$142,039.42' },
+                  { label: 'Allocation', value: '22%' },
+                  { label: 'Gain/Return', value: '▲ 1.45%' },
+                  { label: 'Cost basis', value: '$128,450.00' },
+                ]}
+              />
+            </div>
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>Columns / Bottom border</span>
+              <DataSet
+                layout="Columns"
+                border="Bottom"
+                darkMode={darkMode}
+                rows={[
+                  { label: 'Open', value: '$184.22' },
+                  { label: 'High', value: '$186.50' },
+                  { label: 'Low', value: '$182.10' },
+                  { label: 'Close', value: '$185.88' },
+                ]}
+              />
+            </div>
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>Rows / Bottom border / Large</span>
+              <DataSet
+                layout="Rows"
+                border="Bottom"
+                size="Large"
+                darkMode={darkMode}
+                rows={[
+                  { label: 'Total assets', value: '$234,349.84' },
+                  { label: 'Total liabilities', value: '$12,500.00' },
+                  { label: 'Net worth', value: '$221,849.84' },
+                ]}
+              />
+            </div>
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>2-Columns / Left border</span>
+              <DataSet
+                layout="2 – Columns"
+                border="Left"
+                darkMode={darkMode}
+                rows={[
+                  { label: '52-week high', value: '$199.62' },
+                  { label: '52-week low', value: '$124.17' },
+                ]}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* GaugeChart */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Gauge Chart (.gaugeChart)</h2>
+        <p className="text-sm text-neutral-500 mb-4">Semi-circle gauge with segmented arc and center value</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', gap: 48, flexWrap: 'wrap', justifyContent: 'center' }}>
+            <GaugeChart value={72} label="Portfolio allocation" darkMode={darkMode} />
+            <GaugeChart
+              value={45}
+              label="Risk exposure"
+              darkMode={darkMode}
+              segments={[
+                { color: '#2A7DA7', weight: 45 },
+                { color: '#3C5A94', weight: 35 },
+                { color: '#152B56', weight: 20 },
+              ]}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* MarginHealthGauge */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Margin Health Gauge (.marginHealthGaugeChart)</h2>
+        <p className="text-sm text-neutral-500 mb-4">5 states — good, warning, danger, critical, empty</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', justifyContent: 'center' }}>
+            {GAUGE_STATES.map((state) => (
+              <div key={state} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <MarginHealthGauge state={state} darkMode={darkMode} />
+                <span style={{
+                  fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500,
+                  color: darkMode ? '#5E6D82' : '#8F9BAE',
+                }}>
+                  State={state}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* LineChart */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Line Chart (lineChart)</h2>
+        <p className="text-sm text-neutral-500 mb-4">Line chart with area fill, interactive tooltips, tabs, and axis labels — Desktop and Mobile sizes</p>
+        <div className="space-y-6">
+          {/* Desktop */}
+          <div
+            className="rounded-xl border p-6"
+            style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+          >
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 16 }}>Desktop — Default state</span>
+            <div style={{ paddingLeft: 48 }}>
+              <LineChart
+                title="M1 net worth"
+                value="$234,349.84"
+                change="$10,624.80 since January 8, 2024"
+                changePositive
+                size="Desktop"
+                darkMode={darkMode}
+              />
+            </div>
+          </div>
+
+          {/* Mobile */}
+          <div
+            className="rounded-xl border p-6"
+            style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+          >
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 16 }}>Mobile — Default state</span>
+            <div style={{ maxWidth: 360, paddingLeft: 48 }}>
+              <LineChart
+                title="M1 net worth"
+                value="$234,349.84"
+                change="$10,624.80"
+                changePositive
+                size="Mobile"
+                darkMode={darkMode}
+              />
+            </div>
+          </div>
+
+          {/* No data */}
+          <div
+            className="rounded-xl border p-6"
+            style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+          >
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 16 }}>No data state</span>
+            <div style={{ paddingLeft: 48 }}>
+              <LineChart
+                title="Performance"
+                size="Desktop"
+                state="No data"
+                darkMode={darkMode}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Render active component content
 // ---------------------------------------------------------------------------
 // Pages that have dark mode implemented
-const DARK_MODE_PAGES = new Set(['banners', 'buttons', 'cards', 'checkboxes-radios'])
+const DARK_MODE_PAGES = new Set(['banners', 'buttons', 'cards', 'checkboxes-radios', 'charts'])
 
 function ActiveContent({ activeId, darkMode, onToggleDarkMode }) {
   const item = NAV.flatMap((g) => g.items).find((i) => i.id === activeId)
@@ -1006,6 +1237,8 @@ function ActiveContent({ activeId, darkMode, onToggleDarkMode }) {
         <CardSection darkMode={darkMode} />
       ) : activeId === 'checkboxes-radios' ? (
         <CheckboxRadioSection darkMode={darkMode} />
+      ) : activeId === 'charts' ? (
+        <ChartSection darkMode={darkMode} />
       ) : (
         <Placeholder label={item.label} />
       )}
