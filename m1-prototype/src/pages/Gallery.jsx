@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Banner, Button, FloatingActionButton, HotButton, IconButton, Card, Radio, Checkbox, CheckboxSingle, FormSelect, Switch, ChartTabs, TabularData, DataSet, GaugeChart, MarginHealthGauge, LineChart } from '../components'
+import { Banner, Button, FloatingActionButton, HotButton, IconButton, Card, Radio, Checkbox, CheckboxSingle, FormSelect, Switch, ChartTabs, TabularData, DataSet, GaugeChart, MarginHealthGauge, LineChart, Dialog, FloatingPanel } from '../components'
 import { faPlus, faMinus, faArrowsRotate, faPen, faShareNodes } from '@fortawesome/free-solid-svg-icons'
 
 // ---------------------------------------------------------------------------
@@ -973,6 +973,296 @@ function CheckboxRadioSection({ darkMode }) {
 }
 
 // ---------------------------------------------------------------------------
+// Dialogs section
+// ---------------------------------------------------------------------------
+function dialogButtons({ darkMode, direction = 'row', primary = 'Confirm', secondary = 'Cancel', secondaryOutline = false, onPrimary, onSecondary }) {
+  const primaryBg = darkMode ? '#6FA7C3' : '#2A7DA7'
+  const primaryFg = darkMode ? '#1C2026' : '#FFFFFF'
+  const accentBorder = darkMode ? '#6FA7C3' : '#2A7DA7'
+  const accentColor = darkMode ? '#6FA7C3' : '#2A7DA7'
+  const outlineBorder = darkMode ? '#2F3641' : '#D4DBE6'
+  const outlineColor = darkMode ? '#ECEFF4' : '#1C2026'
+  const isColumn = direction === 'column'
+  return (
+    <div style={{ display: 'flex', gap: 12, flexDirection: direction }}>
+      <button style={{
+        fontFamily: 'Inter, sans-serif', fontWeight: 600,
+        fontSize: 14, lineHeight: '20px',
+        padding: '12px 24px', borderRadius: 24,
+        border: 'none', backgroundColor: primaryBg, color: primaryFg,
+        cursor: 'pointer', ...(isColumn ? { width: '100%', textAlign: 'center' } : {}),
+      }} onClick={onPrimary}>{primary}</button>
+      <button style={{
+        fontFamily: 'Inter, sans-serif', fontWeight: 600,
+        fontSize: 14, lineHeight: '20px',
+        padding: '12px 24px', borderRadius: 24,
+        border: `2px solid ${secondaryOutline ? outlineBorder : accentBorder}`,
+        backgroundColor: 'transparent',
+        color: secondaryOutline ? outlineColor : accentColor,
+        cursor: 'pointer', ...(isColumn ? { width: '100%', textAlign: 'center' } : {}),
+      }} onClick={onSecondary}>{secondary}</button>
+    </div>
+  )
+}
+
+function DialogSection({ darkMode }) {
+  const [openDialog, setOpenDialog] = useState(null)
+
+  const demos = [
+    {
+      id: 'web-standard',
+      label: 'Web / Standard — all props',
+      variant: 'Web', typeStyle: 'Standard', image: true,
+      title: 'Confirm your transfer',
+      body: 'You are about to transfer $5,000.00 from your Brokerage account to your High-Yield Cash Account. This transfer will be processed within 1–2 business days.',
+      links: [{ label: 'Transfer terms', disclosure: false }, { label: 'FDIC insurance details', disclosure: true }],
+      slot: (
+        <div style={{
+          padding: 16, borderRadius: 8,
+          backgroundColor: darkMode ? '#272C35' : '#F3F5F8',
+          display: 'flex', flexDirection: 'column', gap: 8,
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, color: darkMode ? '#8F9BAE' : '#546073' }}>From</span>
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 500, color: darkMode ? '#ECEFF4' : '#1C2026' }}>Brokerage</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, color: darkMode ? '#8F9BAE' : '#546073' }}>To</span>
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 500, color: darkMode ? '#ECEFF4' : '#1C2026' }}>High-Yield Cash</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, color: darkMode ? '#8F9BAE' : '#546073' }}>Amount</span>
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 500, color: darkMode ? '#ECEFF4' : '#1C2026' }}>$5,000.00</span>
+          </div>
+        </div>
+      ),
+      stickyFooter: true,
+    },
+    {
+      id: 'web-small',
+      label: 'Web / Small — minimal',
+      variant: 'Web', typeStyle: 'Small',
+      title: 'Are you sure?',
+      body: 'This action cannot be undone. You will permanently delete this portfolio and all associated data.',
+    },
+    {
+      id: 'web-no-buttons',
+      label: 'Web / Standard — no buttons, links only',
+      variant: 'Web', typeStyle: 'Standard',
+      title: 'Important disclosures',
+      body: 'Investment products are not FDIC insured, not bank guaranteed, and may lose value. M1 Finance LLC is a registered broker-dealer, member FINRA/SIPC.',
+      links: [{ label: 'View full disclosures', disclosure: false }, { label: 'FINRA BrokerCheck', disclosure: true }],
+      noButtons: true,
+    },
+    {
+      id: 'mobile-standard',
+      label: 'Mobile — standard',
+      variant: 'Mobile',
+      title: 'Enable notifications',
+      body: 'Stay informed about your portfolio performance, trade confirmations, and account updates with push notifications.',
+      links: [{ label: 'Notification preferences', disclosure: false }],
+    },
+    {
+      id: 'mobile-android',
+      label: 'Mobile — Android close',
+      variant: 'Mobile', androidClose: true,
+      title: 'Update available',
+      body: 'A new version of M1 is available. Update now for the latest features and improvements.',
+    },
+  ]
+
+  return (
+    <div className="space-y-10">
+      {/* Variant overview */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Web Dialog</h2>
+        <p className="text-sm text-neutral-500 mb-4">584px wide, 8px radius. Standard and Small type styles. Optional image, links, slot, button group, sticky footer.</p>
+      </div>
+
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Mobile Dialog</h2>
+        <p className="text-sm text-neutral-500 mb-4">343px wide, 8px radius. Optional links, slot, button group, Android close.</p>
+      </div>
+
+      {/* Launch buttons */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Interactive Demos</h2>
+        <p className="text-sm text-neutral-500 mb-4">Click to open each dialog variant with scrim overlay</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {demos.map((demo) => (
+              <button
+                key={demo.id}
+                onClick={() => setOpenDialog(demo.id)}
+                style={{
+                  fontFamily: 'Inter, sans-serif', fontWeight: 600,
+                  fontSize: 14, lineHeight: '20px',
+                  padding: '12px 24px', borderRadius: 24,
+                  border: `2px solid ${darkMode ? '#6FA7C3' : '#2A7DA7'}`,
+                  backgroundColor: 'transparent',
+                  color: darkMode ? '#6FA7C3' : '#2A7DA7',
+                  cursor: 'pointer', textAlign: 'left',
+                  transition: 'background-color 100ms ease-out',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = darkMode ? '#0D2531' : '#E5EFF4' }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+              >
+                {demo.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Static preview cards — using Dialog inline mode */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Static Previews</h2>
+        <p className="text-sm text-neutral-500 mb-4">Dialog atoms without scrim — Web Standard, Web Small, and Mobile</p>
+        <div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 rounded-xl"
+          style={{ backgroundColor: darkMode ? '#1A1E23' : '#F3F5F8' }}
+        >
+          {/* Web Standard */}
+          <Dialog
+            inline
+            variant="Web"
+            typeStyle="Standard"
+            title="Standard dialog title"
+            body="Body text explaining the purpose of this dialog. It provides context and helps the user make a decision."
+            image
+            links={[{ label: 'Learn more', disclosure: false }]}
+            slot={
+              <div style={{ padding: 16, borderRadius: 8, backgroundColor: darkMode ? '#272C35' : '#F3F5F8' }}>
+                <span style={{ fontSize: 14, color: darkMode ? '#8F9BAE' : '#546073' }}>Slot content area</span>
+              </div>
+            }
+            stickyFooter
+            buttonGroup={dialogButtons({ darkMode, direction: 'row', primary: 'Primary action', secondary: 'Secondary' })}
+            darkMode={darkMode}
+          />
+
+          {/* Web Small */}
+          <Dialog
+            inline
+            variant="Web"
+            typeStyle="Small"
+            title="Small dialog title"
+            body="Smaller body text for confirmations and simple messages that need less visual weight."
+            buttonGroup={dialogButtons({ darkMode, direction: 'row', primary: 'Confirm', secondary: 'Cancel' })}
+            darkMode={darkMode}
+          />
+
+          {/* Mobile */}
+          <Dialog
+            inline
+            variant="Mobile"
+            title="Mobile dialog"
+            body="Mobile dialogs are 343px wide with 16px padding on all sides."
+            links={[{ label: 'Notification preferences', disclosure: false }]}
+            buttonGroup={dialogButtons({ darkMode, direction: 'column', primary: 'Enable', secondary: 'Close', secondaryOutline: true })}
+            darkMode={darkMode}
+          />
+        </div>
+      </div>
+
+      {/* Scrim tokens reference */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Scrim</h2>
+        <p className="text-sm text-neutral-500 mb-4">Dialogs render over a scrim overlay (#000000 at 80% opacity). Click any demo button above to see it in action.</p>
+      </div>
+
+      {/* Rendered dialog instances */}
+      {demos.map((demo) => (
+        <Dialog
+          key={demo.id}
+          open={openDialog === demo.id}
+          onClose={() => setOpenDialog(null)}
+          variant={demo.variant}
+          typeStyle={demo.typeStyle || 'Standard'}
+          title={demo.title}
+          body={demo.body}
+          image={demo.image || false}
+          links={demo.links}
+          slot={demo.slot}
+          stickyFooter={demo.stickyFooter || false}
+          androidClose={demo.androidClose || false}
+          darkMode={darkMode}
+          buttonGroup={demo.noButtons ? null : dialogButtons({
+            darkMode,
+            direction: demo.variant === 'Mobile' ? 'column' : 'row',
+            onPrimary: () => setOpenDialog(null),
+            onSecondary: () => setOpenDialog(null),
+          })}
+        />
+      ))}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Floating Panel section
+// ---------------------------------------------------------------------------
+function FloatingPanelSection({ darkMode }) {
+  return (
+    <div className="space-y-10">
+      {/* Overview */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">moveMoneyDropdown</h2>
+        <p className="text-sm text-neutral-500 mb-4">Floating dropdown panel for the "Move money" action. Web (298px, drop shadow) and Mobile (375px, full-width with nav header). Collapsed shows 3 items, Expanded shows all 7.</p>
+      </div>
+
+      {/* Web variants */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Web — Collapsed / Expanded</h2>
+        <p className="text-sm text-neutral-500 mb-4">298px wide with 8px radius and drop shadow. Click "More options" to toggle.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div className="flex flex-wrap gap-8 items-start">
+            <FloatingPanel client="Web" darkMode={darkMode} />
+            <FloatingPanel client="Web" state="Expanded" darkMode={darkMode} />
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile variants */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Mobile — Collapsed / Expanded</h2>
+        <p className="text-sm text-neutral-500 mb-4">375px wide, full-width with mobile nav header (close icon + title).</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div className="flex flex-wrap gap-8 items-start">
+            <FloatingPanel client="Mobile" darkMode={darkMode} />
+            <FloatingPanel client="Mobile" state="Expanded" darkMode={darkMode} />
+          </div>
+        </div>
+      </div>
+
+      {/* With banner */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">With Notification Banner</h2>
+        <p className="text-sm text-neutral-500 mb-4">Optional banner slot (hasBanner) shown below header.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div className="flex flex-wrap gap-8 items-start">
+            <FloatingPanel client="Web" hasBanner darkMode={darkMode} />
+            <FloatingPanel client="Mobile" hasBanner darkMode={darkMode} />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Charts section
 // ---------------------------------------------------------------------------
 const GAUGE_STATES = ['good', 'warning', 'danger', 'critical', 'empty']
@@ -1207,7 +1497,7 @@ function ChartSection({ darkMode }) {
 // Render active component content
 // ---------------------------------------------------------------------------
 // Pages that have dark mode implemented
-const DARK_MODE_PAGES = new Set(['banners', 'buttons', 'cards', 'checkboxes-radios', 'charts'])
+const DARK_MODE_PAGES = new Set(['banners', 'buttons', 'cards', 'checkboxes-radios', 'charts', 'dialogs', 'floating-panel'])
 
 function ActiveContent({ activeId, darkMode, onToggleDarkMode }) {
   const item = NAV.flatMap((g) => g.items).find((i) => i.id === activeId)
@@ -1239,6 +1529,10 @@ function ActiveContent({ activeId, darkMode, onToggleDarkMode }) {
         <CheckboxRadioSection darkMode={darkMode} />
       ) : activeId === 'charts' ? (
         <ChartSection darkMode={darkMode} />
+      ) : activeId === 'dialogs' ? (
+        <DialogSection darkMode={darkMode} />
+      ) : activeId === 'floating-panel' ? (
+        <FloatingPanelSection darkMode={darkMode} />
       ) : (
         <Placeholder label={item.label} />
       )}
