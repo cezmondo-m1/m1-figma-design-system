@@ -830,7 +830,7 @@ Primary navigation list item used in `Web-rail-nav`. Contains a left icon slot, 
 
 | Property | Value |
 |----------|-------|
-| Width | 216px |
+| Width | 216px (standalone); 264px in Web-rail-nav context (fills parent) |
 | Height | 40px |
 | Left icon | 24×24 |
 | End icon | 16×16 |
@@ -883,11 +883,43 @@ Primary navigation list item used in `Web-rail-nav`. Contains a left icon slot, 
 
 No description provided.
 
-Full web sidebar navigation rail. Composes `AppNavigationItem` and `nav-section` instances into a scrollable vertical panel. Contains three zones: a top "hot button" area (M1 Intelligence / feature CTA), a main navigation area with expandable product sections, and a footer area with utility links (Settings, Transfers, Support, Referrals).
+Full web sidebar navigation rail. Composes `AppNavigationItem` and `nav-section` instances into a scrollable vertical panel. Contains three zones: a top "hot button" area (M1 Intelligence / feature CTA), a main navigation area with expandable product sections, and a footer area with user/utility links.
 
 **Expanded vs Collapsed:**
 - **Expanded:** 264px wide — shows full icon + label + chevron for each nav item
 - **Collapsed:** 72px wide — shows only icons (labels hidden via clipping); hot button renders as a circular icon button
+
+**Main nav (5 items):**
+1. **Home** — `AppNavigationItem` (no sub-menu). Selected state uses `#E8EDF5` bg + `#152B56` left border + elevated gradient icon (`homeElevated24`).
+2. **Earn** — `nav-section` with sub-menu:
+   - *cash* group: "My Funds" (`$8,000,00.00 available`)
+   - *actions* group: "Add account" (caption: "Individual and joint")
+3. **Invest** — `nav-section` with sub-menu:
+   - *brokerage* group: "My Portfolio" (`$17,000.00`, caption: "Invest up to $17,000 with margin"), "Long-term investments" (`$50,000.00`)
+   - *Retirement* group: "Roth IRA" (`$25,123.98`)
+   - *Insights* group: "Concentration analysis" (caption: "By sector, asset, and region")
+   - *Actions* group: "Transfer to M1" (caption: "Partial or full account", end icon: `transfer20`), "Add account" (caption: "Brokerage, retirement, and crypto", end icon: `addBubble24`)
+4. **Borrow** — `nav-section` with sub-menu:
+   - *Margin* group: "Brokerage" (`$1,000.00 margin balance`)
+   - *Actions* group: "Add a loan" (caption: "Personal or margin", end icon: `addBubble24`)
+5. **Research** — `nav-section` with sub-menu (no grouped labels):
+   - "News", "Stocks", "Funds", "Crypto", "Model Portfolios", "My Pies", "Watchlist"
+
+**Footer (4 items):** All are `AppNavigationItem` instances, ordered:
+1. "Taylor Maede" (user account / avatar)
+2. "Disclosures"
+3. "Help"
+4. "Log out"
+
+When Selection=Settings, the first footer item ("Taylor Maede") shows Selected state (`#E8ECF2` bg + `#1C2026` left border).
+
+**Selection behavior:**
+- Selection=Home → Home item is Selected; all product nav-sections are Collapsed
+- Selection=Earn → Home is Default; Earn nav-section is "Opened (Selected)" (`#F3F5F8` bg); other sections Collapsed
+- Selection=Invest → Invest nav-section is "Opened (Selected)"; others Collapsed
+- Selection=Borrow → Borrow nav-section is "Opened (Selected)"; others Collapsed
+- Selection=Research → Research nav-section is "Opened (Selected)"; others Collapsed
+- Selection=Settings → All nav-sections Collapsed; first footer item is Selected
 
 ### Tokens used
 
@@ -1036,9 +1068,9 @@ Web top header bar. Contains a left section with hamburger menu icon + M1 logo, 
 
 | Property | Type | Values | Default |
 |----------|------|--------|---------|
-| State | VARIANT | Default, Selected | Default |
-| $Amount | VARIANT | On, Off | On |
-| Caption | VARIANT | On, Off | On |
+| State | VARIANT | Default, Selected | Selected |
+| $Amount | VARIANT | On, Off | Off |
+| Caption | VARIANT | On, Off | Off |
 | End icon | BOOLEAN | true, false | true |
 | $Amount (text) | TEXT | — | "$--" |
 | Title | TEXT | — | "Title" |

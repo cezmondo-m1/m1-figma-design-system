@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Banner, Button, FloatingActionButton, HotButton, IconButton, Card, Radio, Checkbox, CheckboxSingle, FormSelect, Switch, ChartTabs, TabularData, DataSet, GaugeChart, MarginHealthGauge, LineChart, Dialog, FloatingPanel, ImageFixedAspectRatio, ImagePlaceholder, Link, ListItem, ToDoList, BasicListItem, Spinner, SkeletonLoader, IntelligencePanel, StaticPill, ActionablePill, ActionablePillMobile, TableHeader, TableSubHeader, TableRow, SlicesTable, SpendTable, EarnTable, TabItem, TabBar, TabsGroup, Toast, TooltipWeb, TooltipMobileSheet, FeatureHighlight } from '../components'
+import { Banner, Button, FloatingActionButton, HotButton, IconButton, Card, Radio, Checkbox, CheckboxSingle, FormSelect, Switch, ChartTabs, TabularData, DataSet, GaugeChart, MarginHealthGauge, LineChart, Dialog, FloatingPanel, ImageFixedAspectRatio, ImagePlaceholder, Link, ListItem, ToDoList, BasicListItem, Spinner, SkeletonLoader, IntelligencePanel, StaticPill, ActionablePill, ActionablePillMobile, TableHeader, TableSubHeader, TableRow, SlicesTable, SpendTable, EarnTable, TabItem, TabBar, TabsGroup, Toast, TooltipWeb, TooltipMobileSheet, FeatureHighlight, FormField, MultilineInput, SearchField, MobileHeader, MobileTabBar, AppNavigationItem, WebRailNav, TopHeader, WebFooter } from '../components'
 import { faPlus, faMinus, faArrowsRotate, faPen, faShareNodes } from '@fortawesome/free-solid-svg-icons'
 
 // ---------------------------------------------------------------------------
@@ -2125,6 +2125,342 @@ function LoadingStatesSection() {
 }
 
 // ---------------------------------------------------------------------------
+// Navigation section
+// ---------------------------------------------------------------------------
+const MOBILE_HEADER_TYPES = ['Default', 'Actions', 'Onboarding']
+const MOBILE_TAB_PAGES = ['Home', 'Earn', 'Invest', 'Borrow', 'Intelligence']
+const WEB_FOOTER_CONFIGS = [
+  { breakpoint: 'Desktop', alignment: 'Left' },
+  { breakpoint: 'Desktop', alignment: 'Centered' },
+  { breakpoint: 'Tablet', alignment: 'Left' },
+  { breakpoint: 'Mobile web', alignment: 'Left' },
+]
+
+function NavigationSection({ darkMode }) {
+  const [activeTab, setActiveTab] = useState('Home')
+  const [navSelection, setNavSelection] = useState('Home')
+  const [navCollapsed, setNavCollapsed] = useState(false)
+
+  const bg = darkMode ? '#0F1115' : '#FFFFFF'
+  const border = darkMode ? '#2F3641' : '#D4DBE6'
+
+  return (
+    <div className="space-y-10">
+      {/* Mobile Header */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Mobile Header</h2>
+        <p className="text-sm text-neutral-500 mb-4">Composed: StatusBar + MobileNav. 3 types × iOS/Android × Light/Dark.</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {MOBILE_HEADER_TYPES.map((type) => (
+            <div key={type}>
+              <h3 className="text-sm font-medium text-neutral-600 mb-2">{type}</h3>
+              <div className="rounded-xl border overflow-hidden" style={{ borderColor: border, backgroundColor: bg }}>
+                <MobileHeader device="iOS" type={type} darkMode={darkMode} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Mobile Tab Bar */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Mobile Tab Bar</h2>
+        <p className="text-sm text-neutral-500 mb-4">Bottom navigation with 5 tabs. Active tab has pill highlight + gradient icon.</p>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {MOBILE_TAB_PAGES.map((p) => (
+            <button
+              key={p}
+              onClick={() => setActiveTab(p)}
+              className={[
+                'px-3 py-1 rounded text-xs font-medium border transition-colors',
+                activeTab === p ? 'bg-neutral-800 text-white border-neutral-700' : 'bg-white text-neutral-600 border-neutral-200',
+              ].join(' ')}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+        <div className="rounded-xl border overflow-hidden inline-block" style={{ borderColor: border, backgroundColor: bg }}>
+          <MobileTabBar activePage={activeTab} darkMode={darkMode} platform="iOS" />
+        </div>
+      </div>
+
+      {/* Web Top Header */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Top Header</h2>
+        <p className="text-sm text-neutral-500 mb-4">Web header bar with menu icon, logo, and promo snippet. Border On/Off variants.</p>
+        <div className="space-y-4">
+          {[true, false].map((b) => (
+            <div key={String(b)}>
+              <h3 className="text-sm font-medium text-neutral-600 mb-2">Border={b ? 'On' : 'Off'}</h3>
+              <div className="rounded-xl border overflow-hidden" style={{ borderColor: border, backgroundColor: bg }}>
+                <TopHeader border={b} darkMode={darkMode} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Web Rail Nav */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Web Rail Nav</h2>
+        <p className="text-sm text-neutral-500 mb-4">Sidebar navigation. Expanded (264px) / Collapsed (72px) with 6 selection states. Click sections to expand sub-navigation.</p>
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          <button
+            onClick={() => setNavCollapsed(!navCollapsed)}
+            className={[
+              'px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors',
+              navCollapsed ? 'bg-neutral-800 text-white border-neutral-700' : 'bg-white text-neutral-600 border-neutral-200',
+            ].join(' ')}
+          >
+            {navCollapsed ? 'Collapsed' : 'Expanded'}
+          </button>
+          <span className="text-xs text-neutral-400 mx-1">|</span>
+          {['Home', 'Earn', 'Invest', 'Borrow', 'Research', 'Settings'].map((sel) => (
+            <button
+              key={sel}
+              onClick={() => setNavSelection(sel)}
+              className={[
+                'px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors',
+                navSelection === sel ? 'bg-neutral-800 text-white border-neutral-700' : 'bg-white text-neutral-600 border-neutral-200',
+              ].join(' ')}
+            >
+              {sel}
+            </button>
+          ))}
+        </div>
+        <div className="rounded-xl border overflow-hidden inline-block" style={{ borderColor: border }}>
+          <WebRailNav
+            selection={navSelection}
+            collapsed={navCollapsed}
+            darkMode={darkMode}
+            onSelect={setNavSelection}
+          />
+        </div>
+      </div>
+
+      {/* AppNavigationItem states */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">AppNavigationItem — States</h2>
+        <p className="text-sm text-neutral-500 mb-4">Default, Hover, Focused, Selected states for sidebar nav items.</p>
+        <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: bg }}>
+          <div className="space-y-1" style={{ width: 264 }}>
+            {['Default', 'Hover', 'Focused', 'Selected'].map((state) => (
+              <AppNavigationItem key={state} label={state} state={state} darkMode={darkMode} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Web Footer */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Web Footer</h2>
+        <p className="text-sm text-neutral-500 mb-4">Responsive footer: Desktop/Tablet/Mobile web × Left/Centered alignment.</p>
+        <div className="space-y-6">
+          {WEB_FOOTER_CONFIGS.map((cfg) => (
+            <div key={`${cfg.breakpoint}-${cfg.alignment}`}>
+              <h3 className="text-sm font-medium text-neutral-600 mb-2">{cfg.breakpoint} / {cfg.alignment}</h3>
+              <div className="rounded-xl border overflow-hidden" style={{ borderColor: border, backgroundColor: bg }}>
+                <WebFooter breakpoint={cfg.breakpoint} alignment={cfg.alignment} darkMode={darkMode} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Token reference */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Shared Tokens</h2>
+        <div className="overflow-x-auto">
+          <table className="text-sm border-collapse w-full">
+            <thead>
+              <tr className="border-b border-neutral-200">
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Token</th>
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Light</th>
+                <th className="text-left py-2 font-medium text-neutral-500">Dark</th>
+              </tr>
+            </thead>
+            <tbody className="text-neutral-700">
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">FG/Neutral Main</td><td className="pr-4">#1C2026</td><td>#ECEFF4</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">FG/Neutral Secondary</td><td className="pr-4">#546073</td><td>#8F9BAE</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">BG/Neutral Primary</td><td className="pr-4">#FFFFFF</td><td>#0F1115</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Border/Main</td><td className="pr-4">#D4DBE6</td><td>#2F3641</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">FG/Primary (Teal/04)</td><td className="pr-4">#2A7DA7</td><td>#6FA7C3</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">BG/Info Subtle</td><td className="pr-4">#E8EDF5</td><td>#272C35</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Blue/08</td><td className="pr-4">#152B56</td><td>#CCD6EA</td></tr>
+              <tr><td className="py-1.5 pr-4">Active tab pill bg</td><td className="pr-4">#EDEDED</td><td>#121212</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Inputs section
+// ---------------------------------------------------------------------------
+const INPUT_STATES = ['Default', 'Active', 'Error', 'Disabled', 'Filled']
+const INPUT_TYPES = ['Text', 'Dropdown', 'Date']
+const INPUT_KINDS = ['Flat', 'Elevated']
+const SEARCH_DEVICES = ['Web', 'iOS', 'Android']
+
+function InputsSection({ darkMode }) {
+  const [formValues, setFormValues] = useState({})
+  const [multiValue, setMultiValue] = useState('')
+  const [searchValue, setSearchValue] = useState('')
+
+  const bg = darkMode ? '#0F1115' : '#FFFFFF'
+  const border = darkMode ? '#2F3641' : '#D4DBE6'
+
+  return (
+    <div className="space-y-10">
+      {/* Form Fields — by State */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Form Fields — States</h2>
+        <p className="text-sm text-neutral-500 mb-4">Default, Active, Error, Disabled, Filled — shown in both Flat and Elevated kinds.</p>
+        {INPUT_KINDS.map((kind) => (
+          <div key={kind} className="mb-6">
+            <h3 className="text-sm font-medium text-neutral-600 mb-3">{kind}</h3>
+            <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: bg }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {INPUT_STATES.map((state) => (
+                  <FormField
+                    key={`${kind}-${state}`}
+                    label={state}
+                    value={state === 'Filled' ? 'Filled value' : (formValues[`${kind}-${state}`] || '')}
+                    state={state}
+                    kind={kind}
+                    helperText={state === 'Error' ? 'Error message' : 'Helper text'}
+                    darkMode={darkMode}
+                    onChange={(v) => setFormValues((p) => ({ ...p, [`${kind}-${state}`]: v }))}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Form Fields — by Type */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Form Fields — Types</h2>
+        <p className="text-sm text-neutral-500 mb-4">Text, Dropdown, and Date input types.</p>
+        <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: bg }}>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {INPUT_TYPES.map((type) => (
+              <FormField
+                key={type}
+                label={type === 'Dropdown' ? 'Select option' : type === 'Date' ? 'Date of birth' : 'Full name'}
+                value={formValues[`type-${type}`] || ''}
+                type={type}
+                kind="Elevated"
+                darkMode={darkMode}
+                onChange={(v) => setFormValues((p) => ({ ...p, [`type-${type}`]: v }))}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Prefix / Suffix */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Prefix &amp; Suffix</h2>
+        <p className="text-sm text-neutral-500 mb-4">Optional prefix and suffix text decorations.</p>
+        <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: bg }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <FormField label="Amount" prefix="$" value={formValues['prefix'] || ''} kind="Elevated" darkMode={darkMode} onChange={(v) => setFormValues((p) => ({ ...p, prefix: v }))} />
+            <FormField label="Weight" suffix="lbs" value={formValues['suffix'] || ''} kind="Elevated" darkMode={darkMode} onChange={(v) => setFormValues((p) => ({ ...p, suffix: v }))} />
+          </div>
+        </div>
+      </div>
+
+      {/* Multiline Input */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Multiline Input</h2>
+        <p className="text-sm text-neutral-500 mb-4">Large text area with character count. Elevated kind only.</p>
+        <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: bg }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <MultilineInput
+              label="Description"
+              value={multiValue}
+              maxLength={250}
+              darkMode={darkMode}
+              onChange={setMultiValue}
+            />
+            <div className="space-y-4">
+              <MultilineInput label="Disabled" state="Disabled" darkMode={darkMode} />
+              <MultilineInput label="Error" state="Error" helperText="This field is required" darkMode={darkMode} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Search Field */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Search Field</h2>
+        <p className="text-sm text-neutral-500 mb-4">Platform-specific search inputs: Web (pill), iOS (filled + Cancel), Android (rounded rect).</p>
+        <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: bg }}>
+          <div className="space-y-6">
+            {SEARCH_DEVICES.map((device) => (
+              <div key={device}>
+                <h3 className="text-sm font-medium mb-2" style={{ color: darkMode ? '#8F9BAE' : '#546073' }}>{device}</h3>
+                <div style={{ maxWidth: device === 'iOS' ? 375 : 500 }}>
+                  <SearchField
+                    device={device}
+                    value={searchValue}
+                    darkMode={darkMode}
+                    onChange={setSearchValue}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Disabled search states */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Search Field — Disabled</h2>
+        <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: bg }}>
+          <div className="space-y-4">
+            {SEARCH_DEVICES.map((device) => (
+              <div key={device} style={{ maxWidth: device === 'iOS' ? 375 : 500 }}>
+                <SearchField device={device} state="Disabled" darkMode={darkMode} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Shared tokens */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Token Reference</h2>
+        <div className="overflow-x-auto">
+          <table className="text-sm border-collapse w-full">
+            <thead>
+              <tr className="border-b border-neutral-200">
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">State</th>
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Border</th>
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Label</th>
+                <th className="text-left py-2 font-medium text-neutral-500">Input Text</th>
+              </tr>
+            </thead>
+            <tbody className="text-neutral-700">
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Default</td><td className="pr-4">#8F9BAE</td><td className="pr-4">#546073</td><td>#546073</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Active</td><td className="pr-4">#2A7DA7</td><td className="pr-4">#2A7DA7</td><td>#1C2026</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Error</td><td className="pr-4">#C4382E</td><td className="pr-4">#C4382E</td><td>#1C2026</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Disabled</td><td className="pr-4">#D4DBE6</td><td className="pr-4">#8F9BAE</td><td>#8F9BAE</td></tr>
+              <tr><td className="py-1.5 pr-4">Filled</td><td className="pr-4">#8F9BAE</td><td className="pr-4">#546073</td><td>#1C2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Intelligence Panel section
 // ---------------------------------------------------------------------------
 function IntelligencePanelSection({ darkMode }) {
@@ -3256,7 +3592,7 @@ function ChartSection({ darkMode }) {
 // Render active component content
 // ---------------------------------------------------------------------------
 // Pages that have dark mode implemented
-const DARK_MODE_PAGES = new Set(['banners', 'buttons', 'cards', 'checkboxes-radios', 'charts', 'dialogs', 'floating-panel', 'img-assets', 'links', 'list-items', 'intelligence-panel', 'pills', 'switch', 'tables', 'tabs', 'toasts', 'tooltips'])
+const DARK_MODE_PAGES = new Set(['banners', 'buttons', 'cards', 'checkboxes-radios', 'charts', 'dialogs', 'floating-panel', 'img-assets', 'inputs', 'links', 'list-items', 'intelligence-panel', 'navigation', 'pills', 'switch', 'tables', 'tabs', 'toasts', 'tooltips'])
 
 function ActiveContent({ activeId, darkMode, onToggleDarkMode }) {
   const item = NAV.flatMap((g) => g.items).find((i) => i.id === activeId)
@@ -3302,6 +3638,10 @@ function ActiveContent({ activeId, darkMode, onToggleDarkMode }) {
         <ListItemsSection darkMode={darkMode} />
       ) : activeId === 'loading-states' ? (
         <LoadingStatesSection />
+      ) : activeId === 'inputs' ? (
+        <InputsSection darkMode={darkMode} />
+      ) : activeId === 'navigation' ? (
+        <NavigationSection darkMode={darkMode} />
       ) : activeId === 'intelligence-panel' ? (
         <IntelligencePanelSection darkMode={darkMode} />
       ) : activeId === 'pills' ? (
