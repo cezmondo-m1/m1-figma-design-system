@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Banner, Button, FloatingActionButton, HotButton, IconButton, Card, Radio, Checkbox, CheckboxSingle, FormSelect, Switch, ChartTabs, TabularData, DataSet, GaugeChart, MarginHealthGauge, LineChart, Dialog, FloatingPanel } from '../components'
+import { Banner, Button, FloatingActionButton, HotButton, IconButton, Card, Radio, Checkbox, CheckboxSingle, FormSelect, Switch, ChartTabs, TabularData, DataSet, GaugeChart, MarginHealthGauge, LineChart, Dialog, FloatingPanel, ImageFixedAspectRatio, ImagePlaceholder, Link, ListItem, ToDoList, BasicListItem, Spinner, SkeletonLoader, IntelligencePanel, StaticPill, ActionablePill, ActionablePillMobile, TableHeader, TableSubHeader, TableRow, SlicesTable, SpendTable, EarnTable, TabItem, TabBar, TabsGroup, Toast, TooltipWeb, TooltipMobileSheet, FeatureHighlight } from '../components'
 import { faPlus, faMinus, faArrowsRotate, faPen, faShareNodes } from '@fortawesome/free-solid-svg-icons'
 
 // ---------------------------------------------------------------------------
@@ -54,6 +54,7 @@ const NAV = [
       { id: 'navigation', label: 'Navigation' },
       { id: 'tabs', label: 'Tabs & Tab Bars' },
       { id: 'floating-panel', label: 'Floating Panel' },
+      { id: 'intelligence-panel', label: 'Intelligence Panel' },
     ],
   },
 ]
@@ -761,7 +762,6 @@ const SWITCH_CLIENTS = ['Web', 'iOS26', 'iOS18', 'Android']
 function CheckboxRadioSection({ darkMode }) {
   const [radioValue, setRadioValue] = useState('a')
   const [checks, setChecks] = useState({ a: true, b: false, c: false })
-  const [switchStates, setSwitchStates] = useState({ Web: true, iOS26: false, iOS18: true, Android: false })
 
   const toggleCheck = (key) => setChecks((p) => ({ ...p, [key]: !p[key] }))
 
@@ -928,46 +928,6 @@ function CheckboxRadioSection({ darkMode }) {
         </div>
       </div>
 
-      {/* Switch */}
-      <div>
-        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Switch (.Switch)</h2>
-        <p className="text-sm text-neutral-500 mb-4">4 clients (Web, iOS26, iOS18, Android) × 4 states (On, Off, On Disabled, Off Disabled)</p>
-        <div
-          className="rounded-xl border p-6"
-          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
-        >
-          <div className="space-y-8">
-            {SWITCH_CLIENTS.map((client) => (
-              <div key={client}>
-                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>
-                  {client}
-                </span>
-                <div style={{ display: 'flex', gap: 32, alignItems: 'center', flexWrap: 'wrap' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                    <Switch
-                      client={client}
-                      on={switchStates[client]}
-                      darkMode={darkMode}
-                      onChange={() => setSwitchStates((p) => ({ ...p, [client]: !p[client] }))}
-                    />
-                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>
-                      {switchStates[client] ? 'On' : 'Off'} (tap)
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                    <Switch client={client} on={true} disabled darkMode={darkMode} />
-                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>On Disabled</span>
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                    <Switch client={client} on={false} disabled darkMode={darkMode} />
-                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>Off Disabled</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
@@ -1263,6 +1223,1805 @@ function FloatingPanelSection({ darkMode }) {
 }
 
 // ---------------------------------------------------------------------------
+// Grids & Responsive Templates section (reference — no components)
+// ---------------------------------------------------------------------------
+const BREAKPOINTS = [
+  { name: 'XS', range: '320–574px', cols: 12, gutters: '16px', padding: '16px', nav: 'Hamburger' },
+  { name: 'S', range: '575–699px', cols: 12, gutters: '24px', padding: '24px', nav: 'Hamburger' },
+  { name: 'M', range: '700–927px', cols: 12, gutters: '16–24px', padding: '24px', nav: 'Collapsed' },
+  { name: 'L', range: '928–1287px', cols: 12, gutters: '24px', padding: '48px', nav: 'Collapsed' },
+  { name: 'XL', range: '1288–1619px', cols: 12, gutters: '24px', padding: '64px', nav: 'Open / Collapsed' },
+  { name: 'XXL', range: '1620–2020px', cols: 12, gutters: '24px', padding: '64px', nav: 'Open / Collapsed' },
+]
+
+const CONTAINERS = [
+  { name: 'Extra Large', maxWidth: '1760px', cols: 12, padding: '64px', gutters: '24px' },
+  { name: 'Large', maxWidth: '1200px', cols: 12, padding: '64px', gutters: '24px' },
+  { name: 'Medium', maxWidth: '900px', cols: 12, padding: '48px', gutters: '24px' },
+  { name: 'Small (1)', maxWidth: '—', cols: 12, padding: '24px', gutters: '24px' },
+  { name: 'Small (2)', maxWidth: '—', cols: 12, padding: '24px', gutters: '24px' },
+  { name: 'X-Small', maxWidth: '—', cols: 12, padding: '16px', gutters: '24px' },
+]
+
+const TEMPLATES = [
+  { name: 'Full width', desc: 'Single full-width content area' },
+  { name: 'Linear rows', desc: '4–6 vertically stacked content blocks' },
+  { name: 'Cascade', desc: 'Stacked blocks with varied sizing' },
+  { name: 'Fixed left column', desc: 'Left sidebar + content area' },
+  { name: '1-2 split', desc: 'Narrow left, wide right' },
+  { name: '2-1 split', desc: 'Wide left, narrow right' },
+  { name: '2 column', desc: 'Equal two-column layout' },
+]
+
+const refTableStyle = {
+  fontFamily: 'Inter, sans-serif', fontSize: 13, width: '100%',
+  borderCollapse: 'collapse', textAlign: 'left',
+}
+
+function RefTh({ children }) {
+  return (
+    <th style={{ padding: '8px 12px', fontWeight: 600, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#546073', borderBottom: '2px solid #D4DBE6' }}>
+      {children}
+    </th>
+  )
+}
+
+function RefTd({ children, highlight }) {
+  return (
+    <td style={{ padding: '8px 12px', borderBottom: '1px solid #E8ECF2', color: '#1C2026', ...(highlight ? { fontWeight: 600 } : {}) }}>
+      {children}
+    </td>
+  )
+}
+
+function GridsSection() {
+  return (
+    <div className="space-y-10">
+      {/* Intro */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Grids & Responsive Templates</h2>
+        <p className="text-sm text-neutral-500 mb-0">Reference documentation — no components. Defines breakpoints, container constraints, and page layout templates for the M1 product.</p>
+      </div>
+
+      {/* Breakpoints */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Breakpoints</h2>
+        <p className="text-sm text-neutral-500 mb-4">6 responsive breakpoints from 320px to 2020px. All use a 12-column grid.</p>
+        <div className="rounded-xl border p-6 overflow-x-auto" style={{ borderColor: '#D4DBE6', backgroundColor: '#FFFFFF' }}>
+          <table style={refTableStyle}>
+            <thead>
+              <tr>
+                <RefTh>Breakpoint</RefTh>
+                <RefTh>Width range</RefTh>
+                <RefTh>Columns</RefTh>
+                <RefTh>Gutters</RefTh>
+                <RefTh>Padding</RefTh>
+                <RefTh>Navigation</RefTh>
+              </tr>
+            </thead>
+            <tbody>
+              {BREAKPOINTS.map((bp) => (
+                <tr key={bp.name}>
+                  <RefTd highlight>{bp.name}</RefTd>
+                  <RefTd>{bp.range}</RefTd>
+                  <RefTd>{bp.cols}</RefTd>
+                  <RefTd>{bp.gutters}</RefTd>
+                  <RefTd>{bp.padding}</RefTd>
+                  <RefTd>{bp.nav}</RefTd>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Visual breakpoint bars */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Breakpoint Visualization</h2>
+        <p className="text-sm text-neutral-500 mb-4">Relative widths of each breakpoint range.</p>
+        <div className="rounded-xl border p-6" style={{ borderColor: '#D4DBE6', backgroundColor: '#FFFFFF' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontFamily: 'Inter, sans-serif' }}>
+            {BREAKPOINTS.map((bp) => {
+              const max = { XS: 574, S: 699, M: 927, L: 1287, XL: 1619, XXL: 2020 }[bp.name]
+              const pct = (max / 2020) * 100
+              return (
+                <div key={bp.name} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <span style={{ width: 32, fontSize: 12, fontWeight: 600, color: '#546073', textAlign: 'right', flexShrink: 0 }}>{bp.name}</span>
+                  <div style={{ flex: 1, position: 'relative', height: 28 }}>
+                    <div style={{
+                      width: `${pct}%`, height: '100%', borderRadius: 4,
+                      background: 'linear-gradient(90deg, #2A7DA7 0%, #6FA7C3 100%)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingRight: 8,
+                      minWidth: 60,
+                    }}>
+                      <span style={{ fontSize: 11, fontWeight: 500, color: '#FFFFFF' }}>{bp.range}</span>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Container constraints */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Web Container Constraints</h2>
+        <p className="text-sm text-neutral-500 mb-4">Most M1 pages use Extra Large (1760px max). All product screens with side navigation are container-constrained.</p>
+        <div className="rounded-xl border p-6 overflow-x-auto" style={{ borderColor: '#D4DBE6', backgroundColor: '#FFFFFF' }}>
+          <table style={refTableStyle}>
+            <thead>
+              <tr>
+                <RefTh>Constraint</RefTh>
+                <RefTh>Max width</RefTh>
+                <RefTh>Columns</RefTh>
+                <RefTh>Padding</RefTh>
+                <RefTh>Gutters</RefTh>
+              </tr>
+            </thead>
+            <tbody>
+              {CONTAINERS.map((c) => (
+                <tr key={c.name}>
+                  <RefTd highlight>{c.name}</RefTd>
+                  <RefTd>{c.maxWidth}</RefTd>
+                  <RefTd>{c.cols}</RefTd>
+                  <RefTd>{c.padding}</RefTd>
+                  <RefTd>{c.gutters}</RefTd>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Base grid states */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Base Grid States</h2>
+        <p className="text-sm text-neutral-500 mb-4">For viewports ≥700px, 4 layout states are available based on nav and panel visibility. Below 700px, nav becomes a hamburger menu.</p>
+        <div className="rounded-xl border p-6" style={{ borderColor: '#D4DBE6', backgroundColor: '#FFFFFF' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, fontFamily: 'Inter, sans-serif' }}>
+            {[
+              { label: 'Nav Open, Panel', nav: 264, panel: 360 },
+              { label: 'Nav Open (Default)', nav: 264, panel: 0 },
+              { label: 'Collapsed, Panel', nav: 72, panel: 360 },
+              { label: 'Collapsed (Default)', nav: 72, panel: 0 },
+            ].map((s) => {
+              const total = s.nav + s.panel + 400
+              return (
+                <div key={s.label} style={{ borderRadius: 8, border: '1px solid #E8ECF2', overflow: 'hidden' }}>
+                  <div style={{ padding: '8px 12px', backgroundColor: '#F3F5F8', fontSize: 12, fontWeight: 600, color: '#1C2026' }}>
+                    {s.label}
+                  </div>
+                  <div style={{ display: 'flex', height: 48 }}>
+                    <div style={{
+                      width: `${(s.nav / total) * 100}%`, backgroundColor: '#2A7DA7',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <span style={{ fontSize: 10, color: '#FFFFFF', fontWeight: 500 }}>{s.nav}px</span>
+                    </div>
+                    <div style={{
+                      flex: 1, backgroundColor: '#FFFFFF', borderLeft: '1px solid #E8ECF2', borderRight: s.panel ? '1px solid #E8ECF2' : 'none',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <span style={{ fontSize: 10, color: '#546073', fontWeight: 500 }}>Content</span>
+                    </div>
+                    {s.panel > 0 && (
+                      <div style={{
+                        width: `${(s.panel / total) * 100}%`, backgroundColor: '#E5EFF4',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>
+                        <span style={{ fontSize: 10, color: '#2A7DA7', fontWeight: 500 }}>{s.panel}px</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Container grid templates */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Container Grid Templates</h2>
+        <p className="text-sm text-neutral-500 mb-4">7 layout patterns for content arrangement within the container grid.</p>
+        <div className="rounded-xl border p-6" style={{ borderColor: '#D4DBE6', backgroundColor: '#FFFFFF' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, fontFamily: 'Inter, sans-serif' }}>
+            {TEMPLATES.map((tpl) => {
+              const cols = {
+                'Full width': ['1fr'],
+                'Linear rows': ['1fr', '1fr', '1fr', '1fr'],
+                'Cascade': ['1fr', '0.7fr', '0.5fr'],
+                'Fixed left column': null,
+                '1-2 split': null,
+                '2-1 split': null,
+                '2 column': null,
+              }[tpl.name]
+              return (
+                <div key={tpl.name} style={{ borderRadius: 8, border: '1px solid #E8ECF2', overflow: 'hidden' }}>
+                  <div style={{ padding: '8px 12px', backgroundColor: '#F3F5F8', fontSize: 12, fontWeight: 600, color: '#1C2026' }}>
+                    {tpl.name}
+                  </div>
+                  <div style={{ padding: 12, minHeight: 64 }}>
+                    {cols ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        {cols.map((fr, i) => (
+                          <div key={i} style={{
+                            height: 10, borderRadius: 2,
+                            backgroundColor: '#2A7DA7', opacity: 0.15 + (i * 0.15),
+                            width: fr === '1fr' ? '100%' : `${parseFloat(fr) * 100}%`,
+                          }} />
+                        ))}
+                      </div>
+                    ) : (
+                      <div style={{ display: 'flex', gap: 4, height: 40 }}>
+                        {tpl.name === 'Fixed left column' && (
+                          <>
+                            <div style={{ width: '25%', borderRadius: 2, backgroundColor: '#2A7DA7', opacity: 0.4 }} />
+                            <div style={{ flex: 1, borderRadius: 2, backgroundColor: '#2A7DA7', opacity: 0.2 }} />
+                          </>
+                        )}
+                        {tpl.name === '1-2 split' && (
+                          <>
+                            <div style={{ width: '33%', borderRadius: 2, backgroundColor: '#2A7DA7', opacity: 0.3 }} />
+                            <div style={{ flex: 1, borderRadius: 2, backgroundColor: '#2A7DA7', opacity: 0.5 }} />
+                          </>
+                        )}
+                        {tpl.name === '2-1 split' && (
+                          <>
+                            <div style={{ flex: 1, borderRadius: 2, backgroundColor: '#2A7DA7', opacity: 0.5 }} />
+                            <div style={{ width: '33%', borderRadius: 2, backgroundColor: '#2A7DA7', opacity: 0.3 }} />
+                          </>
+                        )}
+                        {tpl.name === '2 column' && (
+                          <>
+                            <div style={{ flex: 1, borderRadius: 2, backgroundColor: '#2A7DA7', opacity: 0.35 }} />
+                            <div style={{ flex: 1, borderRadius: 2, backgroundColor: '#2A7DA7', opacity: 0.35 }} />
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ padding: '4px 12px 8px', fontSize: 11, color: '#546073' }}>{tpl.desc}</div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Nav dimensions reference */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Key Dimensions</h2>
+        <p className="text-sm text-neutral-500 mb-4">Fixed widths used across all grid states.</p>
+        <div className="rounded-xl border p-6" style={{ borderColor: '#D4DBE6', backgroundColor: '#FFFFFF' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, fontFamily: 'Inter, sans-serif' }}>
+            {[
+              { label: 'Nav Open', value: '264px' },
+              { label: 'Nav Collapsed', value: '72px' },
+              { label: 'Intelligence Panel', value: '360px' },
+              { label: 'Max Content Width', value: '1760px' },
+            ].map((d) => (
+              <div key={d.label} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <span style={{ fontSize: 11, fontWeight: 500, color: '#546073', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{d.label}</span>
+                <span style={{ fontSize: 24, fontWeight: 600, color: '#1C2026' }}>{d.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Img Assets section
+// ---------------------------------------------------------------------------
+function ImgAssetsSection({ darkMode }) {
+  return (
+    <div className="space-y-10">
+      {/* Overview */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Img Assets</h2>
+        <p className="text-sm text-neutral-500 mb-0">Image containers with fixed aspect ratios and placeholder wrappers. 2 component sets + 1 standalone.</p>
+      </div>
+
+      {/* .imageFixedAspectRatio */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">.imageFixedAspectRatio</h2>
+        <p className="text-sm text-neutral-500 mb-4">Image container enforcing a fixed aspect ratio. 3 variants: 16:9 (240×135), 4:3 (240×180), 1:1 (240×240).</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'flex-end' }}>
+            {['16:9', '4:3', '1:1'].map((ratio) => (
+              <div key={ratio} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <ImageFixedAspectRatio ratio={ratio} darkMode={darkMode} />
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>
+                  {ratio}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* imagePlaceholder */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">imagePlaceholder</h2>
+        <p className="text-sm text-neutral-500 mb-4">Wrapper around .imageFixedAspectRatio. Default (1:1, 24px padding, 288×288) and Mobile (16:9, no padding, 343×193).</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, alignItems: 'flex-start' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+              <div style={{
+                border: `1px dashed ${darkMode ? '#2F3641' : '#D4DBE6'}`,
+                borderRadius: 4,
+              }}>
+                <ImagePlaceholder type="Default" darkMode={darkMode} />
+              </div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>
+                Default — 288×288, 24px padding
+              </span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+              <div style={{
+                border: `1px dashed ${darkMode ? '#2F3641' : '#D4DBE6'}`,
+                borderRadius: 4,
+              }}>
+                <ImagePlaceholder type="Mobile" darkMode={darkMode} />
+              </div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>
+                Mobile — 343×193, no padding
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* imagePlaceholder/Type3 */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">imagePlaceholder/Type3</h2>
+        <p className="text-sm text-neutral-500 mb-4">Standalone component — visually identical to Default (288×288, 24px padding, 1:1). Lives outside the imagePlaceholder component set.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>
+            <div style={{
+              border: `1px dashed ${darkMode ? '#2F3641' : '#D4DBE6'}`,
+              borderRadius: 4,
+            }}>
+              <ImagePlaceholder type="Default" darkMode={darkMode} />
+            </div>
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>
+              Type3 — identical to Default
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Sizing reference */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Sizing Reference</h2>
+        <p className="text-sm text-neutral-500 mb-4">All component dimensions from the spec.</p>
+        <div
+          className="rounded-xl border p-6 overflow-x-auto"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <table style={{
+            fontFamily: 'Inter, sans-serif', fontSize: 13, width: '100%',
+            borderCollapse: 'collapse', textAlign: 'left',
+            color: darkMode ? '#ECEFF4' : '#1C2026',
+          }}>
+            <thead>
+              <tr>
+                {['Component', 'Variant', 'Width', 'Height', 'Aspect Ratio'].map((h) => (
+                  <th key={h} style={{
+                    padding: '8px 12px', fontWeight: 600, fontSize: 11,
+                    textTransform: 'uppercase', letterSpacing: '0.05em',
+                    color: darkMode ? '#8F9BAE' : '#546073',
+                    borderBottom: `2px solid ${darkMode ? '#2F3641' : '#D4DBE6'}`,
+                  }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['.imageFixedAspectRatio', '16:9', '240px', '135px', '16:9'],
+                ['.imageFixedAspectRatio', '4:3', '240px', '180px', '4:3'],
+                ['.imageFixedAspectRatio', '1:1', '240px', '240px', '1:1'],
+                ['imagePlaceholder', 'Default', '288px', '288px', '1:1'],
+                ['imagePlaceholder', 'Mobile', '343px', '193px', '16:9'],
+                ['imagePlaceholder/Type3', '—', '288px', '288px', '1:1'],
+              ].map(([comp, variant, w, h, ar], i) => (
+                <tr key={i}>
+                  <td style={{ padding: '8px 12px', fontWeight: 600, borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{comp}</td>
+                  <td style={{ padding: '8px 12px', borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{variant}</td>
+                  <td style={{ padding: '8px 12px', borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{w}</td>
+                  <td style={{ padding: '8px 12px', borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{h}</td>
+                  <td style={{ padding: '8px 12px', borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{ar}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Links section
+// ---------------------------------------------------------------------------
+function LinksSection({ darkMode }) {
+  const sizes = ['Large', 'Medium', 'Small']
+  const kinds = ['Default', 'Underline', 'Super']
+
+  return (
+    <div className="space-y-10">
+      {/* Overview */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Links</h2>
+        <p className="text-sm text-neutral-500 mb-0">1 component set, 9 variants (Size 3 × Kind 3). Color: FG/Primary (#2A7DA7).</p>
+      </div>
+
+      {/* All variants grid */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">All Variants</h2>
+        <p className="text-sm text-neutral-500 mb-4">Size × Kind matrix. Default is semibold with no underline. Underline and Super use regular weight with underline decoration.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <table style={{ fontFamily: 'Inter, sans-serif', borderCollapse: 'collapse', width: '100%' }}>
+            <thead>
+              <tr>
+                <th style={{ padding: '8px 16px', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: darkMode ? '#8F9BAE' : '#546073', borderBottom: `2px solid ${darkMode ? '#2F3641' : '#D4DBE6'}`, textAlign: 'left' }}>
+                  Size / Kind
+                </th>
+                {kinds.map((kind) => (
+                  <th key={kind} style={{ padding: '8px 16px', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: darkMode ? '#8F9BAE' : '#546073', borderBottom: `2px solid ${darkMode ? '#2F3641' : '#D4DBE6'}`, textAlign: 'left' }}>
+                    {kind}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {sizes.map((size) => (
+                <tr key={size}>
+                  <td style={{ padding: '12px 16px', fontWeight: 600, fontSize: 13, color: darkMode ? '#ECEFF4' : '#1C2026', borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>
+                    {size}
+                  </td>
+                  {kinds.map((kind) => (
+                    <td key={kind} style={{ padding: '12px 16px', borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>
+                      <Link
+                        size={size}
+                        kind={kind}
+                        superNum={kind === 'Super' ? sizes.indexOf(size) + 1 : null}
+                        darkMode={darkMode}
+                      >
+                        {kind === 'Default' ? 'Learn more' : kind === 'Underline' ? 'Terms and conditions' : 'Disclosure link'}
+                      </Link>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Usage examples */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Usage Examples</h2>
+        <p className="text-sm text-neutral-500 mb-4">Common link patterns from the design system guidelines.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+            {/* Stacked disclosure links */}
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>Stacked disclosure links</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <Link size="Medium" kind="Underline" darkMode={darkMode}>Privacy policy</Link>
+                <Link size="Medium" kind="Underline" darkMode={darkMode}>Terms of service</Link>
+                <Link size="Medium" kind="Underline" darkMode={darkMode}>FINRA BrokerCheck</Link>
+              </div>
+            </div>
+
+            {/* Super disclosure links */}
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>Super links with numbered references</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <Link size="Small" kind="Super" superNum={1} darkMode={darkMode}>FDIC insurance terms and conditions</Link>
+                <Link size="Small" kind="Super" superNum={2} darkMode={darkMode}>Investment advisory agreement</Link>
+                <Link size="Small" kind="Super" superNum={3} darkMode={darkMode}>Brokerage account agreement</Link>
+              </div>
+            </div>
+
+            {/* Link next to button */}
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>Link next to button (M1 Plus terms pattern)</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <button style={{
+                  fontFamily: 'Inter, sans-serif', fontWeight: 600,
+                  fontSize: 14, lineHeight: '20px',
+                  padding: '12px 24px', borderRadius: 24,
+                  border: 'none',
+                  backgroundColor: darkMode ? '#6FA7C3' : '#2A7DA7',
+                  color: darkMode ? '#1C2026' : '#FFFFFF',
+                  cursor: 'pointer',
+                }}>
+                  Get M1 Plus
+                </button>
+                <Link size="Medium" kind="Underline" darkMode={darkMode}>View membership terms</Link>
+              </div>
+            </div>
+
+            {/* Standalone default link */}
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>Standalone action link</span>
+              <Link size="Large" kind="Default" darkMode={darkMode}>View all transactions →</Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Typography reference */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Typography Reference</h2>
+        <p className="text-sm text-neutral-500 mb-4">Font specs per variant from the design system.</p>
+        <div
+          className="rounded-xl border p-6 overflow-x-auto"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <table style={{
+            fontFamily: 'Inter, sans-serif', fontSize: 13, width: '100%',
+            borderCollapse: 'collapse', textAlign: 'left',
+            color: darkMode ? '#ECEFF4' : '#1C2026',
+          }}>
+            <thead>
+              <tr>
+                {['Size', 'Kind', 'Weight', 'Font Size', 'Line Height', 'Decoration', 'Pad Y'].map((h) => (
+                  <th key={h} style={{
+                    padding: '8px 12px', fontWeight: 600, fontSize: 11,
+                    textTransform: 'uppercase', letterSpacing: '0.05em',
+                    color: darkMode ? '#8F9BAE' : '#546073',
+                    borderBottom: `2px solid ${darkMode ? '#2F3641' : '#D4DBE6'}`,
+                  }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Large', 'Default', '600', '16px', '24px', 'None', '8px'],
+                ['Large', 'Underline', '400', '16px', '24px', 'Underline', '12px'],
+                ['Large', 'Super', '400', '16px', '24px', 'Underline', '12px'],
+                ['Medium', 'Default', '600', '14px', '20px', 'None', '6px'],
+                ['Medium', 'Underline', '400', '14px', '20px', 'Underline', '8px'],
+                ['Medium', 'Super', '400', '14px', '20px', 'Underline', '8px'],
+                ['Small', 'Default', '600', '12px', '16px', 'None', '2px'],
+                ['Small', 'Underline', '400', '12px', '16px', 'Underline', '2px'],
+                ['Small', 'Super', '400', '12px', '16px', 'Underline', '2px'],
+              ].map(([size, kind, wt, fs, lh, dec, pad], i) => (
+                <tr key={i}>
+                  {[size, kind, wt, fs, lh, dec, pad].map((val, j) => (
+                    <td key={j} style={{
+                      padding: '8px 12px',
+                      fontWeight: j < 2 ? 600 : 400,
+                      borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}`,
+                    }}>{val}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// List Items section
+// ---------------------------------------------------------------------------
+function ListItemsSection({ darkMode }) {
+  return (
+    <div className="space-y-10">
+      {/* Overview */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">List Items</h2>
+        <p className="text-sm text-neutral-500 mb-0">4 component sets: listItem (2v), .To-Do-List (3v), Basiclistitem/web (3v), Basiclistitem/mobile (4v).</p>
+      </div>
+
+      {/* listItem — Large/Mobile and Default/Web */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">listItem</h2>
+        <p className="text-sm text-neutral-500 mb-4">Rich list item with title, label, pill, description rows, leading icon, and trailing caret. Large/Mobile (16px pad, no horizontal) and Default/Web (32px/24px pad).</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 8 }}>Large / Mobile</span>
+              <div style={{ border: `1px solid ${darkMode ? '#2F3641' : '#E8ECF2'}`, borderRadius: 8, overflow: 'hidden' }}>
+                <ListItem
+                  type="Large" client="Mobile"
+                  title="Smart Transfer"
+                  label="Automatic investing"
+                  pill="New"
+                  descriptions={[
+                    { text: 'Automatically invest excess cash above your threshold', showCaret: true },
+                    { text: 'Set up in 2 minutes — no minimums required', showCaret: true },
+                  ]}
+                  darkMode={darkMode}
+                />
+              </div>
+            </div>
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 8 }}>Default / Web</span>
+              <div style={{ border: `1px solid ${darkMode ? '#2F3641' : '#E8ECF2'}`, borderRadius: 8, overflow: 'hidden' }}>
+                <ListItem
+                  type="Default" client="Web"
+                  title="Portfolio Performance"
+                  label="Brokerage account"
+                  descriptions={[
+                    { text: 'Total value: $142,039.42 (+12.4% all time)', showCaret: true },
+                    { text: 'Today: +$324.18 (+0.23%)', showCaret: false },
+                    { text: 'View detailed breakdown', showCaret: true },
+                  ]}
+                  darkMode={darkMode}
+                />
+              </div>
+            </div>
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 8 }}>Without icon or caret</span>
+              <div style={{ border: `1px solid ${darkMode ? '#2F3641' : '#E8ECF2'}`, borderRadius: 8, overflow: 'hidden' }}>
+                <ListItem
+                  type="Default" client="Web"
+                  title="Account Settings"
+                  label="Manage your preferences"
+                  hasIcon={false} hasCaret={false}
+                  descriptions={[
+                    { text: 'Personal information and security', showCaret: false },
+                  ]}
+                  darkMode={darkMode}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* .To-Do-List */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">.To-Do-List</h2>
+        <p className="text-sm text-neutral-500 mb-4">Leading indicator — Completed (green check), Remaining (numbered), Dot (bullet). All 24×24.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', gap: 32, alignItems: 'center', flexWrap: 'wrap' }}>
+            {[
+              { state: 'Completed', label: 'Completed' },
+              { state: 'Remaining', label: 'Remaining (1)' },
+              { state: 'Remaining', number: 2, label: 'Remaining (2)' },
+              { state: 'Dot', label: 'Dot' },
+            ].map((item) => (
+              <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <ToDoList state={item.state} number={item.number || 1} darkMode={darkMode} />
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: darkMode ? '#8F9BAE' : '#546073' }}>
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* To-Do-List in context */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">.To-Do-List — In Context</h2>
+        <p className="text-sm text-neutral-500 mb-4">Checklist pattern using To-Do-List indicators with description text.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontFamily: 'Inter, sans-serif', maxWidth: 400 }}>
+            {[
+              { state: 'Completed', text: 'Create your account' },
+              { state: 'Completed', text: 'Verify your identity' },
+              { state: 'Remaining', number: 3, text: 'Fund your account' },
+              { state: 'Remaining', number: 4, text: 'Build your portfolio' },
+            ].map((item, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '8px 0', borderBottom: `1px solid ${darkMode ? '#2F3641' : '#E8ECF2'}` }}>
+                <ToDoList state={item.state} number={item.number || 1} darkMode={darkMode} />
+                <span style={{
+                  fontSize: 14, lineHeight: '20px',
+                  color: item.state === 'Completed' ? (darkMode ? '#8F9BAE' : '#546073') : (darkMode ? '#ECEFF4' : '#1C2026'),
+                  textDecoration: item.state === 'Completed' ? 'line-through' : 'none',
+                }}>
+                  {item.text}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Basiclistitem/web */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Basiclistitem/web</h2>
+        <p className="text-sm text-neutral-500 mb-4">Web description row — Paragraph, Bulleted, Numbered. 374×40 with optional trailing caret.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {['Paragraph', 'Bulleted', 'Numbered'].map((v) => (
+              <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', width: 80, flexShrink: 0 }}>{v}</span>
+                <BasicListItem client="Web" variant={v} text={`${v} description row with trailing caret`} darkMode={darkMode} />
+              </div>
+            ))}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', width: 80, flexShrink: 0 }}>No caret</span>
+              <BasicListItem client="Web" variant="Paragraph" text="Description row without caret" showCaret={false} darkMode={darkMode} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Basiclistitem/mobile */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Basiclistitem/mobile</h2>
+        <p className="text-sm text-neutral-500 mb-4">Mobile description row — Paragraph, Bulleted, Numbered, Icon. Icon variant adds a leading 32×32 icon.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {['Paragraph', 'Bulleted', 'Numbered', 'Icon'].map((v) => (
+              <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', width: 80, flexShrink: 0 }}>{v}</span>
+                <BasicListItem client="Mobile" variant={v} text={`${v} mobile description row`} darkMode={darkMode} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Loading States section
+// ---------------------------------------------------------------------------
+function LoadingStatesSection() {
+  return (
+    <div className="space-y-10">
+      {/* Overview */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Loading States</h2>
+        <p className="text-sm text-neutral-500 mb-0">2 component sets: Spinner (2v) and skeleton-loader (2v). Both have Light and Dark theme variants.</p>
+      </div>
+
+      {/* Spinner */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Spinner</h2>
+        <p className="text-sm text-neutral-500 mb-4">Animated circular arc indicator. 120×120 base, 1.5px stroke. Light (#8693A9) and Dark (#4B4C4E) themes.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Light */}
+          <div
+            className="rounded-xl border p-6 flex flex-col items-center gap-4"
+            style={{ borderColor: '#D4DBE6', backgroundColor: '#FFFFFF' }}
+          >
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: '#8F9BAE' }}>Light theme</span>
+            <Spinner theme="Light" />
+          </div>
+          {/* Dark */}
+          <div
+            className="rounded-xl border p-6 flex flex-col items-center gap-4"
+            style={{ borderColor: '#2F3641', backgroundColor: '#0F1115' }}
+          >
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: '#5E6D82' }}>Dark theme</span>
+            <Spinner theme="Dark" />
+          </div>
+        </div>
+      </div>
+
+      {/* Spinner sizes */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Spinner — Scaled Sizes</h2>
+        <p className="text-sm text-neutral-500 mb-4">Base is 120px. Commonly scaled down for inline use.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: '#D4DBE6', backgroundColor: '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 32, flexWrap: 'wrap' }}>
+            {[24, 40, 64, 120].map((s) => (
+              <div key={s} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <Spinner theme="Light" size={s} />
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, color: '#8F9BAE' }}>{s}px</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* skeleton-loader */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">skeleton-loader</h2>
+        <p className="text-sm text-neutral-500 mb-4">Shimmer gradient placeholder. Base 90×80, 4px radius. Resizable to match content. Gradient uses #D4DBE6 at varying opacities.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Light */}
+          <div
+            className="rounded-xl border p-6 flex flex-col gap-4"
+            style={{ borderColor: '#D4DBE6', backgroundColor: '#FFFFFF' }}
+          >
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: '#8F9BAE' }}>Light theme</span>
+            <SkeletonLoader theme="Light" />
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, color: '#8F9BAE' }}>Base size — 90×80</span>
+          </div>
+          {/* Dark */}
+          <div
+            className="rounded-xl border p-6 flex flex-col gap-4"
+            style={{ borderColor: '#2F3641', backgroundColor: '#0F1115' }}
+          >
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: '#5E6D82' }}>Dark theme</span>
+            <SkeletonLoader theme="Dark" />
+            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, color: '#5E6D82' }}>Base size — 90×80</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Skeleton composition */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Skeleton — Content Placeholder</h2>
+        <p className="text-sm text-neutral-500 mb-4">Skeleton loaders resized to approximate a card layout.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Light card skeleton */}
+          <div
+            className="rounded-xl border p-6"
+            style={{ borderColor: '#D4DBE6', backgroundColor: '#FFFFFF' }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 320 }}>
+              <SkeletonLoader theme="Light" width={320} height={160} borderRadius={8} />
+              <SkeletonLoader theme="Light" width={200} height={20} borderRadius={4} />
+              <SkeletonLoader theme="Light" width={280} height={14} borderRadius={4} />
+              <SkeletonLoader theme="Light" width={240} height={14} borderRadius={4} />
+              <div style={{ display: 'flex', gap: 12, marginTop: 4 }}>
+                <SkeletonLoader theme="Light" width={100} height={36} borderRadius={18} />
+                <SkeletonLoader theme="Light" width={80} height={36} borderRadius={18} />
+              </div>
+            </div>
+          </div>
+          {/* Dark card skeleton */}
+          <div
+            className="rounded-xl border p-6"
+            style={{ borderColor: '#2F3641', backgroundColor: '#0F1115' }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 320 }}>
+              <SkeletonLoader theme="Dark" width={320} height={160} borderRadius={8} />
+              <SkeletonLoader theme="Dark" width={200} height={20} borderRadius={4} />
+              <SkeletonLoader theme="Dark" width={280} height={14} borderRadius={4} />
+              <SkeletonLoader theme="Dark" width={240} height={14} borderRadius={4} />
+              <div style={{ display: 'flex', gap: 12, marginTop: 4 }}>
+                <SkeletonLoader theme="Dark" width={100} height={36} borderRadius={18} />
+                <SkeletonLoader theme="Dark" width={80} height={36} borderRadius={18} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Intelligence Panel section
+// ---------------------------------------------------------------------------
+function IntelligencePanelSection({ darkMode }) {
+  return (
+    <div className="space-y-10">
+      {/* Overview */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">M1 Intelligence Panel</h2>
+        <p className="text-sm text-neutral-500 mb-0">Collapsible AI chat interface (360px compact). Composed from existing components — no unique component set. Includes header, Chat/History tabs, welcome content, suggestion prompts, chat input, and footer.</p>
+      </div>
+
+      {/* Compact panel — light & dark */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Compact Panel — Chat Tab</h2>
+        <p className="text-sm text-neutral-500 mb-4">360px wide. Header with expand/create/more/close icons. Suggestion prompts, chat input, Early Beta badge, and disclaimer footer.</p>
+        <div
+          className="rounded-xl p-8 flex flex-wrap gap-8 justify-center"
+          style={{ backgroundColor: darkMode ? '#1A1E23' : '#F3F5F8' }}
+        >
+          <IntelligencePanel darkMode={darkMode} />
+        </div>
+      </div>
+
+      {/* History tab */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Compact Panel — History Tab</h2>
+        <p className="text-sm text-neutral-500 mb-4">Switched to History tab showing past conversations.</p>
+        <div
+          className="rounded-xl p-8 flex flex-wrap gap-8 justify-center"
+          style={{ backgroundColor: darkMode ? '#1A1E23' : '#F3F5F8' }}
+        >
+          <IntelligencePanel darkMode={darkMode} activeTab="History" />
+        </div>
+      </div>
+
+      {/* Anatomy reference */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Panel Anatomy</h2>
+        <p className="text-sm text-neutral-500 mb-4">Structural breakdown of the panel composition.</p>
+        <div
+          className="rounded-xl border p-6 overflow-x-auto"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <table style={{
+            fontFamily: 'Inter, sans-serif', fontSize: 13, width: '100%',
+            borderCollapse: 'collapse', textAlign: 'left',
+            color: darkMode ? '#ECEFF4' : '#1C2026',
+          }}>
+            <thead>
+              <tr>
+                {['Section', 'Elements', 'Key Specs'].map((h) => (
+                  <th key={h} style={{
+                    padding: '8px 12px', fontWeight: 600, fontSize: 11,
+                    textTransform: 'uppercase', letterSpacing: '0.05em',
+                    color: darkMode ? '#8F9BAE' : '#546073',
+                    borderBottom: `2px solid ${darkMode ? '#2F3641' : '#D4DBE6'}`,
+                  }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Header bar', 'New chat label, expand/create/more/close icons', '14px/20px, 400wt'],
+                ['Tab bar', 'Chat (active) / History tabs', '600wt active, 400wt inactive, 40px gap'],
+                ['Welcome area', 'Greeting heading, subtitle', '28px/32px 500wt, 18px/24px 400wt'],
+                ['Suggestions', '5 prompt buttons with +/caret icons', '12px/16px 600wt, 16px radius, 12px gap'],
+                ['Chat input', 'Text field + send button (40×40 circle)', '12px radius, 12px padding'],
+                ['Footer', 'Early Beta badge, disclaimer, legal links', '12px/16px, Gold/03 badge bg'],
+              ].map(([section, elements, specs], i) => (
+                <tr key={i}>
+                  <td style={{ padding: '8px 12px', fontWeight: 600, borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{section}</td>
+                  <td style={{ padding: '8px 12px', borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{elements}</td>
+                  <td style={{ padding: '8px 12px', borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{specs}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Key dimensions */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Key Dimensions</h2>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, fontFamily: 'Inter, sans-serif' }}>
+            {[
+              { label: 'Panel Width', value: '360px' },
+              { label: 'Panel Radius', value: '16px' },
+              { label: 'Inner Radius', value: '12px' },
+              { label: 'Tab Bar Height', value: '48px' },
+              { label: 'Send Button', value: '40×40' },
+              { label: 'Suggestion Radius', value: '16px' },
+            ].map((d) => (
+              <div key={d.label} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <span style={{ fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#546073', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{d.label}</span>
+                <span style={{ fontSize: 24, fontWeight: 600, color: darkMode ? '#ECEFF4' : '#1C2026' }}>{d.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Pills section
+// ---------------------------------------------------------------------------
+const STATIC_PILL_KINDS = ['Success', 'Caution', 'Danger', 'Neutral', 'Promotion', 'Important', 'Info']
+
+function PillsSection({ darkMode }) {
+  const [selectedWeb, setSelectedWeb] = useState({})
+  const [selectedMobile, setSelectedMobile] = useState({})
+
+  return (
+    <div className="space-y-10">
+      {/* Overview */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Pills</h2>
+        <p className="text-sm text-neutral-500 mb-0">3 component sets: Static pills (7v), Actionable pills- Web (18v), Actionable pills- Mobile (4v).</p>
+      </div>
+
+      {/* Static pills */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Static Pills</h2>
+        <p className="text-sm text-neutral-500 mb-4">Non-interactive status badges. 7 kinds with leading icon. 12px/16px, 24px radius, 20px height.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+            {STATIC_PILL_KINDS.map((kind) => (
+              <StaticPill key={kind} kind={kind} label={kind} darkMode={darkMode} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Actionable pills — Web Primary */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Actionable Pills — Web / Primary</h2>
+        <p className="text-sm text-neutral-500 mb-4">Interactive filter chips. Large and Small sizes. Default → Hover → Selected states. Click to toggle.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            {/* Large with icon */}
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 8 }}>Large — with icon</span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {['Stocks', 'Crypto', 'ETFs', 'Bonds'].map((label) => (
+                  <ActionablePill
+                    key={label}
+                    kind="Primary" size="Large" icon
+                    label={label}
+                    selected={!!selectedWeb[`pi-${label}`]}
+                    onClick={() => setSelectedWeb(s => ({ ...s, [`pi-${label}`]: !s[`pi-${label}`] }))}
+                    darkMode={darkMode}
+                  />
+                ))}
+              </div>
+            </div>
+            {/* Large without icon */}
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 8 }}>Large — no icon</span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {['All', '1D', '1W', '1M', '3M', '1Y'].map((label) => (
+                  <ActionablePill
+                    key={label}
+                    kind="Primary" size="Large" icon={false}
+                    label={label}
+                    selected={!!selectedWeb[`pn-${label}`]}
+                    onClick={() => setSelectedWeb(s => ({ ...s, [`pn-${label}`]: !s[`pn-${label}`] }))}
+                    darkMode={darkMode}
+                  />
+                ))}
+              </div>
+            </div>
+            {/* Small without icon */}
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 8 }}>Small — no icon</span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {['Buy', 'Sell', 'Dividend', 'Transfer'].map((label) => (
+                  <ActionablePill
+                    key={label}
+                    kind="Primary" size="Small" icon={false}
+                    label={label}
+                    selected={!!selectedWeb[`ps-${label}`]}
+                    onClick={() => setSelectedWeb(s => ({ ...s, [`ps-${label}`]: !s[`ps-${label}`] }))}
+                    darkMode={darkMode}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Actionable pills — Web Secondary */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Actionable Pills — Web / Secondary</h2>
+        <p className="text-sm text-neutral-500 mb-4">Blue-toned secondary kind. Same size/state/icon matrix as Primary.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 8 }}>Large — with icon</span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {['Growth', 'Value', 'Income'].map((label) => (
+                  <ActionablePill
+                    key={label}
+                    kind="Secondary" size="Large" icon
+                    label={label}
+                    selected={!!selectedWeb[`si-${label}`]}
+                    onClick={() => setSelectedWeb(s => ({ ...s, [`si-${label}`]: !s[`si-${label}`] }))}
+                    darkMode={darkMode}
+                  />
+                ))}
+              </div>
+            </div>
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 8 }}>Small — no icon</span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {['Tech', 'Healthcare', 'Energy', 'Finance'].map((label) => (
+                  <ActionablePill
+                    key={label}
+                    kind="Secondary" size="Small" icon={false}
+                    label={label}
+                    selected={!!selectedWeb[`ss-${label}`]}
+                    onClick={() => setSelectedWeb(s => ({ ...s, [`ss-${label}`]: !s[`ss-${label}`] }))}
+                    darkMode={darkMode}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Actionable pills — Mobile */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Actionable Pills — Mobile</h2>
+        <p className="text-sm text-neutral-500 mb-4">Mobile short-form pills with 40×40 touch target. Default and Selected states, with or without icon.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 8 }}>With icon</span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {['Stocks', 'Crypto', 'ETFs'].map((label) => (
+                  <ActionablePillMobile
+                    key={label}
+                    icon
+                    label={label}
+                    selected={!!selectedMobile[`mi-${label}`]}
+                    onClick={() => setSelectedMobile(s => ({ ...s, [`mi-${label}`]: !s[`mi-${label}`] }))}
+                    darkMode={darkMode}
+                  />
+                ))}
+              </div>
+            </div>
+            <div>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 8 }}>Without icon</span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {['All', 'Buy', 'Sell'].map((label) => (
+                  <ActionablePillMobile
+                    key={label}
+                    icon={false}
+                    label={label}
+                    selected={!!selectedMobile[`mn-${label}`]}
+                    onClick={() => setSelectedMobile(s => ({ ...s, [`mn-${label}`]: !s[`mn-${label}`] }))}
+                    darkMode={darkMode}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Switch section
+// ---------------------------------------------------------------------------
+function SwitchSection({ darkMode }) {
+  const [states, setStates] = useState({ Web: true, iOS26: false, iOS18: true, Android: false })
+
+  return (
+    <div className="space-y-10">
+      {/* Overview */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Switch (.Switch)</h2>
+        <p className="text-sm text-neutral-500 mb-0">1 component set, 16 variants (Client 4 × State 4). Supersedes the legacy Switch from Check boxes and radio buttons.</p>
+      </div>
+
+      {/* All clients — interactive */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">All Clients — Interactive</h2>
+        <p className="text-sm text-neutral-500 mb-4">Click to toggle. Each client has platform-specific sizing and styling.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div className="space-y-8">
+            {SWITCH_CLIENTS.map((client) => (
+              <div key={client}>
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500, color: darkMode ? '#5E6D82' : '#8F9BAE', display: 'block', marginBottom: 12 }}>
+                  {client}
+                </span>
+                <div style={{ display: 'flex', gap: 32, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                    <Switch
+                      client={client}
+                      on={states[client]}
+                      darkMode={darkMode}
+                      onChange={() => setStates((p) => ({ ...p, [client]: !p[client] }))}
+                    />
+                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>
+                      {states[client] ? 'On' : 'Off'} (tap)
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                    <Switch client={client} on disabled darkMode={darkMode} />
+                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>On Disabled</span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                    <Switch client={client} on={false} disabled darkMode={darkMode} />
+                    <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>Off Disabled</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Sizing reference */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Sizing Reference</h2>
+        <p className="text-sm text-neutral-500 mb-4">Platform-specific dimensions from the design system spec.</p>
+        <div
+          className="rounded-xl border p-6 overflow-x-auto"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <table style={{
+            fontFamily: 'Inter, sans-serif', fontSize: 13, width: '100%',
+            borderCollapse: 'collapse', textAlign: 'left',
+            color: darkMode ? '#ECEFF4' : '#1C2026',
+          }}>
+            <thead>
+              <tr>
+                {['Client', 'Overall Size', 'Track Radius', 'Knob Size', 'Disabled Method'].map((h) => (
+                  <th key={h} style={{
+                    padding: '8px 12px', fontWeight: 600, fontSize: 11,
+                    textTransform: 'uppercase', letterSpacing: '0.05em',
+                    color: darkMode ? '#8F9BAE' : '#546073',
+                    borderBottom: `2px solid ${darkMode ? '#2F3641' : '#D4DBE6'}`,
+                  }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Web', '52×33', '32px', '28×28', '50% opacity'],
+                ['iOS26', '64×28', '100px', '39×24', '50% opacity'],
+                ['iOS18', '51×31', '100px', '27×27', '50% opacity'],
+                ['Android', '34×20', '7px', '20×20', 'Desaturated track'],
+              ].map(([client, size, radius, knob, disabled], i) => (
+                <tr key={i}>
+                  <td style={{ padding: '8px 12px', fontWeight: 600, borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{client}</td>
+                  <td style={{ padding: '8px 12px', borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{size}</td>
+                  <td style={{ padding: '8px 12px', borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{radius}</td>
+                  <td style={{ padding: '8px 12px', borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{knob}</td>
+                  <td style={{ padding: '8px 12px', borderBottom: `1px solid ${darkMode ? '#1E242C' : '#E8ECF2'}` }}>{disabled}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Color tokens */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Track Colors</h2>
+        <p className="text-sm text-neutral-500 mb-4">On: Teal/04 (#2A7DA7), Off: Grey/04 (#8F9BAE). Android disabled uses desaturated tracks.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, fontFamily: 'Inter, sans-serif' }}>
+            {[
+              { label: 'On', color: '#2A7DA7', token: 'Teal/04' },
+              { label: 'Off', color: '#8F9BAE', token: 'Grey/04' },
+              { label: 'Android On Disabled', color: '#A6C9DA', token: '—' },
+              { label: 'Android Off Disabled', color: '#E8ECF2', token: '—' },
+            ].map((c) => (
+              <div key={c.label} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ width: 24, height: 24, borderRadius: 4, backgroundColor: c.color, border: '1px solid rgba(0,0,0,0.1)' }} />
+                <div>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: darkMode ? '#ECEFF4' : '#1C2026', display: 'block' }}>{c.label}</span>
+                  <span style={{ fontSize: 11, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>{c.color} {c.token !== '—' ? `(${c.token})` : ''}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Tables section
+// ---------------------------------------------------------------------------
+function TablesSection({ darkMode }) {
+  return (
+    <div className="space-y-10">
+      {/* Overview */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Tables</h2>
+        <p className="text-sm text-neutral-500 mb-0">5 component sets + 7 standalone row/header components. Composed data tables for portfolio slices, transfers, spend, earn, and personal loans.</p>
+      </div>
+
+      {/* Primitives */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Table Primitives</h2>
+        <p className="text-sm text-neutral-500 mb-4">Header, sub-header, and data row building blocks shared across all tables.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ maxWidth: 700, display: 'flex', flexDirection: 'column' }}>
+            <TableHeader columns={[
+              { label: 'Name', flex: 2 }, { label: 'Value' }, { label: 'Status' }, { label: '' },
+            ]} darkMode={darkMode} />
+            <TableSubHeader label="Category A" darkMode={darkMode} />
+            <TableRow darkMode={darkMode} cells={[
+              { flex: 2, icon: true, text: 'Row with icon', large: true },
+              { text: '$1,234.56' },
+              { text: '', pill: 'neutral', pillLabel: 'Active' },
+              { text: '', caret: true },
+            ]} />
+            <TableRow darkMode={darkMode} cells={[
+              { flex: 2, image: true, text: 'AAPL', sub: 'Apple Inc.', large: true },
+              { text: '$12,340.50' },
+              { text: '', pill: 'danger', pillLabel: 'Past Due' },
+              { text: '', caret: true },
+            ]} />
+            <TableHeader columns={[
+              { label: 'Name', flex: 2 }, { label: 'Value' }, { label: 'Status' },
+            ]} sub darkMode={darkMode} />
+          </div>
+        </div>
+      </div>
+
+      {/* slices table */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">slices table</h2>
+        <p className="text-sm text-neutral-500 mb-4">Portfolio holdings with ticker, value, gain/return, and allocation. Web (700px, 4-col) and Mobile (375px, 2-col condensed).</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div className="flex flex-wrap gap-8 items-start">
+            <SlicesTable client="Web" darkMode={darkMode} />
+            <SlicesTable client="Mobile" darkMode={darkMode} />
+          </div>
+        </div>
+      </div>
+
+      {/* spendTable */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">spendTable</h2>
+        <p className="text-sm text-neutral-500 mb-4">Spend product table with sub-header dividers, icon rows, and status pills (gradient neutral + danger).</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div className="flex flex-wrap gap-8 items-start">
+            <SpendTable client="Web" darkMode={darkMode} />
+            <SpendTable client="Mobile" darkMode={darkMode} />
+          </div>
+        </div>
+      </div>
+
+      {/* earnTable */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">earnTable</h2>
+        <p className="text-sm text-neutral-500 mb-4">Earn product table with APY values and status indicators.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div className="flex flex-wrap gap-8 items-start">
+            <EarnTable client="Web" darkMode={darkMode} />
+            <EarnTable client="Mobile" darkMode={darkMode} />
+          </div>
+        </div>
+      </div>
+
+      {/* Shared tokens */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Shared Color Tokens</h2>
+        <p className="text-sm text-neutral-500 mb-4">Consistent palette across all table components.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{ borderColor: darkMode ? '#2F3641' : '#D4DBE6', backgroundColor: darkMode ? '#0F1115' : '#FFFFFF' }}
+        >
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, fontFamily: 'Inter, sans-serif' }}>
+            {[
+              { label: 'FG/Neutral Main', color: darkMode ? '#ECEFF4' : '#1C2026' },
+              { label: 'FG/Neutral Secondary', color: darkMode ? '#8F9BAE' : '#546073' },
+              { label: 'BG/Neutral Secondary', color: darkMode ? '#1A1E23' : '#F3F5F8' },
+              { label: 'Border/Main', color: darkMode ? '#2F3641' : '#D4DBE6' },
+              { label: 'Teal/04', color: darkMode ? '#6FA7C3' : '#2A7DA7' },
+              { label: 'Green/05', color: darkMode ? '#4CAF6E' : '#1F7C3E' },
+              { label: 'Red/04', color: darkMode ? '#D08E99' : '#B3485A' },
+            ].map((c) => (
+              <div key={c.label} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ width: 24, height: 24, borderRadius: 4, backgroundColor: c.color, border: '1px solid rgba(128,128,128,0.2)' }} />
+                <div>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: darkMode ? '#ECEFF4' : '#1C2026', display: 'block' }}>{c.label}</span>
+                  <span style={{ fontSize: 11, color: darkMode ? '#5E6D82' : '#8F9BAE' }}>{c.color}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Tabs & Tab Bars section
+// ---------------------------------------------------------------------------
+const TAB_LABELS = ['Overview', 'Activity', 'Holdings', 'Research', 'News', 'Settings', 'Help']
+const TAB_BAR_TYPES = ['Web primary tab bar', 'Mobile tab bar', 'Web secondary tab bar', 'Web centered tab bar']
+
+function TabsSection({ darkMode }) {
+  const [primaryActive, setPrimaryActive] = useState(0)
+  const [secondaryActive, setSecondaryActive] = useState(0)
+  const [barActives, setBarActives] = useState({})
+  const [groupCount, setGroupCount] = useState(3)
+  const [groupActive, setGroupActive] = useState(0)
+
+  const bg = darkMode ? '#0F1115' : '#FFFFFF'
+  const border = darkMode ? '#2F3641' : '#D4DBE6'
+
+  return (
+    <div className="space-y-10">
+      {/* Tab States — Primary */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Tab States — Primary</h2>
+        <p className="text-sm text-neutral-500 mb-4">Bottom border indicator for active state. Active / Default / Hover.</p>
+        <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: bg }}>
+          <div style={{ display: 'flex', gap: 8, borderBottom: `1px solid ${border}` }}>
+            {['Active', 'Default', 'Hover'].map((label, i) => (
+              <TabItem
+                key={label}
+                label={label}
+                hierarchy="Primary"
+                active={i === primaryActive}
+                darkMode={darkMode}
+                onClick={() => setPrimaryActive(i)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Tab States — Secondary */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Tab States — Secondary</h2>
+        <p className="text-sm text-neutral-500 mb-4">Pill-shaped tabs with rounded corners. Used for filter-style groups.</p>
+        <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: bg }}>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            {['Stocks', 'ETFs', 'Crypto'].map((label, i) => (
+              <TabItem
+                key={label}
+                label={label}
+                hierarchy="Secondary"
+                active={i === secondaryActive}
+                darkMode={darkMode}
+                onClick={() => setSecondaryActive(i)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Tab Bar variants */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Tab Bar</h2>
+        <p className="text-sm text-neutral-500 mb-4">Composed horizontal bar with overflow scrims. 4 variants.</p>
+        <div className="space-y-6">
+          {TAB_BAR_TYPES.map((type) => (
+            <div key={type}>
+              <h3 className="text-sm font-medium text-neutral-600 mb-2">{type}</h3>
+              <div className="rounded-xl border p-6 overflow-hidden" style={{ borderColor: border, backgroundColor: bg }}>
+                <TabBar
+                  type={type}
+                  tabs={TAB_LABELS}
+                  activeIndex={barActives[type] ?? 0}
+                  darkMode={darkMode}
+                  onTabChange={(i) => setBarActives((prev) => ({ ...prev, [type]: i }))}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tabs Group */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Tabs Group</h2>
+        <p className="text-sm text-neutral-500 mb-4">Compact tab group — 2 to 7 tabs. Adjust count below.</p>
+        <div className="flex items-center gap-3 mb-4">
+          <span className="text-sm text-neutral-600">Tabs:</span>
+          {[2, 3, 4, 5, 6, 7].map((n) => (
+            <button
+              key={n}
+              onClick={() => { setGroupCount(n); setGroupActive(0) }}
+              className={[
+                'px-3 py-1 rounded text-sm font-medium border transition-colors',
+                groupCount === n
+                  ? 'bg-neutral-800 text-white border-neutral-700'
+                  : 'bg-white text-neutral-600 border-neutral-200 hover:border-neutral-400',
+              ].join(' ')}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+        <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: bg }}>
+          <TabsGroup
+            tabs={TAB_LABELS.slice(0, groupCount)}
+            activeIndex={groupActive}
+            darkMode={darkMode}
+            onTabChange={setGroupActive}
+          />
+        </div>
+      </div>
+
+      {/* Shared tokens */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Shared Tokens</h2>
+        <div className="overflow-x-auto">
+          <table className="text-sm border-collapse w-full">
+            <thead>
+              <tr className="border-b border-neutral-200">
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Token</th>
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Light</th>
+                <th className="text-left py-2 font-medium text-neutral-500">Dark</th>
+              </tr>
+            </thead>
+            <tbody className="text-neutral-700">
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">FG/Neutral Main</td><td className="pr-4">#1C2026</td><td>#ECEFF4</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">FG/Neutral Secondary</td><td className="pr-4">#546073</td><td>#8F9BAE</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">BG/Neutral Secondary</td><td className="pr-4">#F3F5F8</td><td>#1A1E23</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Border/Main</td><td className="pr-4">#D4DBE6</td><td>#2F3641</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Pill Active BG</td><td className="pr-4">#E8EDF5</td><td>#272C35</td></tr>
+              <tr><td className="py-1.5 pr-4">Pill Active Border (Blue/03)</td><td className="pr-4">#99ADD5</td><td>#3C5A94</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Toasts section
+// ---------------------------------------------------------------------------
+const TOAST_MODES = ['Light', 'Dark', 'Light_Secondary', 'Dark_Secondary']
+
+function ToastsSection({ darkMode }) {
+  const [leadingIcon, setLeadingIcon] = useState(true)
+  const [textLink, setTextLink] = useState(true)
+  const [trailingIcon, setTrailingIcon] = useState(true)
+
+  return (
+    <div className="space-y-10">
+      {/* Interactive builder */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Toast Builder</h2>
+        <p className="text-sm text-neutral-500 mb-4">Toggle optional elements. 4 mode styles × 2 leading icon × 2 text link × 2 trailing icon = 32 variants.</p>
+        <div className="flex flex-wrap gap-3 mb-6">
+          {[
+            ['Leading Icon', leadingIcon, setLeadingIcon],
+            ['Text Link', textLink, setTextLink],
+            ['Trailing Icon', trailingIcon, setTrailingIcon],
+          ].map(([label, val, setter]) => (
+            <button
+              key={label}
+              onClick={() => setter(!val)}
+              className={[
+                'px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors',
+                val ? 'bg-neutral-800 text-white border-neutral-700' : 'bg-white text-neutral-600 border-neutral-200',
+              ].join(' ')}
+            >
+              {label}: {val ? 'On' : 'Off'}
+            </button>
+          ))}
+        </div>
+        <div className="space-y-6">
+          {TOAST_MODES.map((mode) => {
+            const isDarkBg = mode === 'Dark' || mode === 'Dark_Secondary'
+            return (
+              <div key={mode}>
+                <h3 className="text-sm font-medium text-neutral-600 mb-2">{mode.replace('_', ' ')}</h3>
+                <div
+                  className="rounded-xl border p-6"
+                  style={{
+                    borderColor: isDarkBg ? '#2F3641' : '#D4DBE6',
+                    backgroundColor: isDarkBg ? '#0F1115' : '#F3F5F8',
+                  }}
+                >
+                  <Toast
+                    mode={mode}
+                    leadingIcon={leadingIcon}
+                    textLink={textLink}
+                    trailingIcon={trailingIcon}
+                    progress={0.65}
+                  />
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Animated demo */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Animated Progress</h2>
+        <p className="text-sm text-neutral-500 mb-4">Progress bar animates to show auto-dismiss timer.</p>
+        <div
+          className="rounded-xl border p-6"
+          style={{
+            borderColor: darkMode ? '#2F3641' : '#D4DBE6',
+            backgroundColor: darkMode ? '#0F1115' : '#F3F5F8',
+          }}
+        >
+          <Toast mode={darkMode ? 'Dark' : 'Light'} animated />
+        </div>
+      </div>
+
+      {/* Shared tokens */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Token Reference</h2>
+        <div className="overflow-x-auto">
+          <table className="text-sm border-collapse w-full">
+            <thead>
+              <tr className="border-b border-neutral-200">
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Element</th>
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Light</th>
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Dark</th>
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Light Sec.</th>
+                <th className="text-left py-2 font-medium text-neutral-500">Dark Sec.</th>
+              </tr>
+            </thead>
+            <tbody className="text-neutral-700">
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Background</td><td className="pr-4">#152B56</td><td className="pr-4">#0C1931</td><td className="pr-4">#FFFFFF</td><td>#1A1E23</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Text</td><td className="pr-4">#FFFFFF</td><td className="pr-4">#ECEFF4</td><td className="pr-4">#1C2026</td><td>#ECEFF4</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Link</td><td className="pr-4">#A6C9DA</td><td className="pr-4">#6FA7C3</td><td className="pr-4">#2A7DA7</td><td>#6FA7C3</td></tr>
+              <tr><td className="py-1.5 pr-4">Progress</td><td className="pr-4">#A6C9DA</td><td className="pr-4">#6FA7C3</td><td className="pr-4">#8F9BAE</td><td>#5E6D82</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Tooltips section
+// ---------------------------------------------------------------------------
+const ALIGNMENTS = ['Left', 'Centered', 'Right']
+const POSITIONS = ['Bottom', 'Top']
+
+function TooltipsSection({ darkMode }) {
+  const bg = darkMode ? '#0F1115' : '#FFFFFF'
+  const border = darkMode ? '#2F3641' : '#D4DBE6'
+
+  return (
+    <div className="space-y-10">
+      {/* Standard Tooltip — Web */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Standard Tooltip — Web</h2>
+        <p className="text-sm text-neutral-500 mb-4">Floating panel with optional headline, body, text link. 343px wide.</p>
+        <div className="space-y-4">
+          <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: darkMode ? '#1A1E23' : '#F3F5F8' }}>
+            <div className="flex flex-wrap gap-4">
+              <TooltipWeb body="Short tooltip with body text only." darkMode={darkMode} />
+              <TooltipWeb headline="With Headline" body="Tooltip with headline and body text for more context." darkMode={darkMode} />
+              <TooltipWeb headline="Full Example" body="Tooltip with all optional elements enabled." textLink="Learn more" darkMode={darkMode} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Standard Tooltip — Mobile sheet */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Standard Tooltip — Mobile</h2>
+        <p className="text-sm text-neutral-500 mb-4">Bottom sheet with grab handle and home indicator. 375px wide.</p>
+        <div className="rounded-xl border p-6 overflow-hidden" style={{ borderColor: border, backgroundColor: darkMode ? '#1A1E23' : '#F3F5F8' }}>
+          <div className="flex flex-wrap gap-4 items-end">
+            <TooltipMobileSheet body="Short tooltip explanation." darkMode={darkMode} />
+            <TooltipMobileSheet headline="Feature Info" body="More detailed explanation with headline." textLink="View details" darkMode={darkMode} />
+          </div>
+        </div>
+      </div>
+
+      {/* Feature Highlight */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Feature Highlight</h2>
+        <p className="text-sm text-neutral-500 mb-4">Directional tail anchored to trigger element. 3 alignments × 2 positions × 2 close states = 12 variants.</p>
+        <div className="space-y-6">
+          {POSITIONS.map((pos) => (
+            <div key={pos}>
+              <h3 className="text-sm font-medium text-neutral-600 mb-2">Position: {pos}</h3>
+              <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: darkMode ? '#1A1E23' : '#F3F5F8' }}>
+                <div className="flex flex-wrap gap-6">
+                  {ALIGNMENTS.map((align) => (
+                    <FeatureHighlight
+                      key={`${pos}-${align}`}
+                      title="New Feature"
+                      body="Discover this exciting new capability."
+                      linkText="Try it out"
+                      alignment={align}
+                      position={pos}
+                      close={align === 'Right'}
+                      darkMode={darkMode}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Feature Highlight with close */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Feature Highlight — Close Button</h2>
+        <p className="text-sm text-neutral-500 mb-4">Close=True variant adds a dismiss affordance.</p>
+        <div className="rounded-xl border p-6" style={{ borderColor: border, backgroundColor: darkMode ? '#1A1E23' : '#F3F5F8' }}>
+          <FeatureHighlight
+            title="Portfolio Insights"
+            body="View AI-powered analysis of your holdings performance."
+            linkText="Learn more"
+            alignment="Centered"
+            position="Bottom"
+            close
+            darkMode={darkMode}
+          />
+        </div>
+      </div>
+
+      {/* Shared tokens */}
+      <div>
+        <h2 className="text-lg font-semibold text-neutral-800 mb-1">Token Reference</h2>
+        <div className="overflow-x-auto">
+          <table className="text-sm border-collapse w-full">
+            <thead>
+              <tr className="border-b border-neutral-200">
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Element</th>
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Web Tooltip</th>
+                <th className="text-left py-2 pr-4 font-medium text-neutral-500">Mobile Sheet</th>
+                <th className="text-left py-2 font-medium text-neutral-500">Feature Highlight</th>
+              </tr>
+            </thead>
+            <tbody className="text-neutral-700">
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Background</td><td className="pr-4">#152B56</td><td className="pr-4">#FFFFFF</td><td>#152B56</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Text</td><td className="pr-4">#FFFFFF</td><td className="pr-4">#1C2026</td><td>#FFFFFF</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Link</td><td className="pr-4">#A6C9DA</td><td className="pr-4">#2A7DA7</td><td>#A6C9DA</td></tr>
+              <tr className="border-b border-neutral-100"><td className="py-1.5 pr-4">Width</td><td className="pr-4">343px</td><td className="pr-4">375px</td><td>343px</td></tr>
+              <tr><td className="py-1.5 pr-4">Corner radius</td><td className="pr-4">8px</td><td className="pr-4">16px top</td><td>8px</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Charts section
 // ---------------------------------------------------------------------------
 const GAUGE_STATES = ['good', 'warning', 'danger', 'critical', 'empty']
@@ -1497,7 +3256,7 @@ function ChartSection({ darkMode }) {
 // Render active component content
 // ---------------------------------------------------------------------------
 // Pages that have dark mode implemented
-const DARK_MODE_PAGES = new Set(['banners', 'buttons', 'cards', 'checkboxes-radios', 'charts', 'dialogs', 'floating-panel'])
+const DARK_MODE_PAGES = new Set(['banners', 'buttons', 'cards', 'checkboxes-radios', 'charts', 'dialogs', 'floating-panel', 'img-assets', 'links', 'list-items', 'intelligence-panel', 'pills', 'switch', 'tables', 'tabs', 'toasts', 'tooltips'])
 
 function ActiveContent({ activeId, darkMode, onToggleDarkMode }) {
   const item = NAV.flatMap((g) => g.items).find((i) => i.id === activeId)
@@ -1533,6 +3292,30 @@ function ActiveContent({ activeId, darkMode, onToggleDarkMode }) {
         <DialogSection darkMode={darkMode} />
       ) : activeId === 'floating-panel' ? (
         <FloatingPanelSection darkMode={darkMode} />
+      ) : activeId === 'grids' ? (
+        <GridsSection />
+      ) : activeId === 'img-assets' ? (
+        <ImgAssetsSection darkMode={darkMode} />
+      ) : activeId === 'links' ? (
+        <LinksSection darkMode={darkMode} />
+      ) : activeId === 'list-items' ? (
+        <ListItemsSection darkMode={darkMode} />
+      ) : activeId === 'loading-states' ? (
+        <LoadingStatesSection />
+      ) : activeId === 'intelligence-panel' ? (
+        <IntelligencePanelSection darkMode={darkMode} />
+      ) : activeId === 'pills' ? (
+        <PillsSection darkMode={darkMode} />
+      ) : activeId === 'switch' ? (
+        <SwitchSection darkMode={darkMode} />
+      ) : activeId === 'tables' ? (
+        <TablesSection darkMode={darkMode} />
+      ) : activeId === 'tabs' ? (
+        <TabsSection darkMode={darkMode} />
+      ) : activeId === 'toasts' ? (
+        <ToastsSection darkMode={darkMode} />
+      ) : activeId === 'tooltips' ? (
+        <TooltipsSection darkMode={darkMode} />
       ) : (
         <Placeholder label={item.label} />
       )}
